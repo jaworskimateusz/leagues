@@ -5,12 +5,10 @@ import org.springframework.format.annotation.NumberFormat;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.beans.Transient;
 
-public class Season {
-    private long seasonId;
+public class Round {
     private long roundId;
-    private long leagueId;
+    private long gameId;
 
     @NotNull
     @NumberFormat
@@ -18,26 +16,17 @@ public class Season {
 
     @NotEmpty
     @Size(max = 100, message= "Maksymalna długość to 100 znaków.")
-    private String description;
+    private String discipline;
 
-    public Season() {
-    }
-
-    public Season(long seasonId, long roundId, int number, String description) {
-        this.seasonId = seasonId;
+    public Round(long roundId, long gameId, int number, String discipline) {
         this.roundId = roundId;
+        this.gameId = gameId;
         this.number = number;
-        this.description = description;
+        this.discipline = discipline;
     }
 
-    @Transient
-    public long getLeagueId() {
-        return leagueId;
-    }
+    public Round() {
 
-    @Transient
-    public void setLeagueId(long leagueId) {
-        this.leagueId = leagueId;
     }
 
     public long getRoundId() {
@@ -48,12 +37,12 @@ public class Season {
         this.roundId = roundId;
     }
 
-    public long getSeasonId() {
-        return seasonId;
+    public long getGameId() {
+        return gameId;
     }
 
-    public void setSeasonId(long seasonId) {
-        this.seasonId = seasonId;
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
     }
 
     public int getNumber() {
@@ -64,11 +53,11 @@ public class Season {
         this.number = number;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDiscipline() {
+        return discipline;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDiscipline(String discipline) {
+        this.discipline = discipline;
     }
 }

@@ -28,12 +28,10 @@
 				</a>
 			</li>
 			<li class="nav-item ml-12" sec:authorize="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_WORKER')">
-				<span class="sr-only">
-					<a class="nav-link" href="players/list">Zawodnicy</a>
-				</span>
+				<a class="nav-link" href="players/list">Zawodnicy</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
-				<a class="nav-link" th:href="@{/objects/list}">Obiekty</a>
+				<a class="nav-link" th:href="@{/places/list}">Obiekty</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
 				<a class="nav-link" th:href="@{/games/list}">Mecze</a>
@@ -68,7 +66,7 @@
 	<div class="container" >
 		<div class="row">
 			<div class="col-md-12">
-				<h3>Zawodnicy</h3>
+				<h3 class="mt-5 pt-4">Zawodnicy</h3>
 				<hr>
 				<p class="h4 mb-4">Dodawanie/edycja zawodnika</p>
 				<form th:action="@{/players/save}"

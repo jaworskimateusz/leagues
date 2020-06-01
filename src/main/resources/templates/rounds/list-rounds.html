@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-	<title>Login</title>
+	<title>Kolejki</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -19,28 +20,27 @@
 	<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="#">
+				<a class="nav-link" href="/home">
 					<svg class="bi bi-house" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 						<path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
 						<path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
 					</svg>
-					<span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li class="nav-item ml-12" sec:authorize="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_WORKER')">
-				<a class="nav-link" href="players/list">Zawodnicy</a>
+			<li class="nav-item ml-12">
+				<a class="nav-link" th:href="@{/players/list}">Zawodnicy</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
-				<a class="nav-link" href="places/list">Obiekty</a>
+				<a class="nav-link" th:href="@{/places/list}">Obiekty</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
-				<a class="nav-link" href="games/list">Mecze</a>
+				<a class="nav-link" th:href="@{/games/list}">Mecze</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
-				<a class="nav-link" href="rounds/list">Kolejki</a>
+				<a class="nav-link" th:href="@{/rounds/list}">Kolejki</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
-				<a class="nav-link" href="seasons/list">Sezony</a>
+				<a class="nav-link" th:href="@{/seasons/list}">Sezony</a>
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
@@ -63,10 +63,58 @@
 	</div>
 </nav>
 <main>
-	<div class="container-fluid px-0" >
+	<div class="container" >
 		<div class="row">
-			<div class="col-md-12" style="opacity: 0.9;">
-				<img src="https://imagazine.pl/wp-content/uploads/2020/01/2019-australian-open-rod-laver-arena.jpg" alt="img" />
+			<div class="col-md-12">
+				<h3 class="mt-5 pt-4">Lista Kolejek</h3>
+				<hr>
+				<form th:action="@{/rounds/search}" class="form-inline mb-3">
+					<a th:href="@{/rounds/add}"
+					   class="btn btn-outline-dark mr-5">
+						Dodaj Kolejkę
+					</a>
+					<input class="form-control ml-5 mr-sm-2 nav navbar-nav navbar-right pl-2 col row justify-content-end"
+							   type="search" name="number" placeholder=" Szukaj po numerze" />
+					<button class="btn btn-dark pl-2" style="position:absolute; right: 15px" type="submit">Wyszukaj</button>
+				</form>
+				<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+					Niepoprawny parametr wyszukiwania.
+				</div>
+				<div th:if="${notFound == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+					Nie znaleziono.
+				</div>
+				<table class="table table-bordered table-striped">
+					<thead class="thead-dark">
+					<tr>
+						<th>Dyscyplina</th>
+						<th>Numer</th>
+						<th>Akcja</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="round : ${rounds}">
+
+						<td th:text="${round.discipline}" />
+						<td th:text="${round.number}" />
+
+						<td class="form-inline">
+							<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+								<a th:href="@{/rounds/update(roundId=${round.roundId})}"
+								   class="btn btn-outline-secondary btn-sm">
+									Edytuj
+								</a>
+							</div>
+							<div sec:authorize="hasRole('ROLE_WORKER')">
+								<a th:href="@{/rounds/delete(roundId=${round.roundId})}"
+								   class="btn btn-dark btn-sm ml-1"
+								   onclick="if (!(confirm('Czy na pewno chcesz usunąć kolejkę?'))) return false">
+									Usuń
+								</a>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -76,3 +124,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
+

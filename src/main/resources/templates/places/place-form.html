@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:>
 <head>
-	<title>Login</title>
+	<title>Formularz obiektu</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,23 +24,22 @@
 						<path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
 						<path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
 					</svg>
-					<span class="sr-only">(current)</span>
 				</a>
 			</li>
-			<li class="nav-item ml-12" sec:authorize="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_WORKER')">
-				<a class="nav-link" href="players/list">Zawodnicy</a>
+			<li class="nav-item ml-12">
+				<a class="nav-link" th:href="@{/players/list}">Zawodnicy</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
-				<a class="nav-link" href="places/list">Obiekty</a>
+				<a class="nav-link" th:href="@{/places/list}">Obiekty</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
-				<a class="nav-link" href="games/list">Mecze</a>
+				<a class="nav-link" th:href="@{/games/list}">Mecze</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
-				<a class="nav-link" href="rounds/list">Kolejki</a>
+				<a class="nav-link" th:href="@{/rounds/list}">Kolejki</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_WORKER')">
-				<a class="nav-link" href="seasons/list">Sezony</a>
+				<a class="nav-link" th:href="@{/seasons/list}">Sezony</a>
 			</li>
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
@@ -63,10 +62,34 @@
 	</div>
 </nav>
 <main>
-	<div class="container-fluid px-0" >
+	<div class="container" >
 		<div class="row">
-			<div class="col-md-12" style="opacity: 0.9;">
-				<img src="https://imagazine.pl/wp-content/uploads/2020/01/2019-australian-open-rod-laver-arena.jpg" alt="img" />
+			<div class="col-md-12">
+				<h3 class="mt-5 pt-4">Obiekty</h3>
+				<hr>
+				<p class="h4 mb-4">Dodawanie/edycja obiektu</p>
+				<form th:action="@{/places/save}"
+					  th:object="${place}" method="POST">
+					<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+						Podane wartości są niepoprawne.
+					</div>
+					<input type="hidden" th:field="*{placeId}" />
+					<input type="text" th:field="*{name}"
+						   class="form-control mb-4 col-4" placeholder="Nazwa *">
+					<input type="text" th:field="*{numberOfHours}"
+						   class="form-control mb-4 col-4" placeholder="Liczba godzin *">
+<!--					<div style="width: 50%">-->
+<!--						<select class="form-control selectpicker" th:field="*{roundId}"> <&#45;&#45;leagueId here &ndash;&gt;-->
+<!--							<option th:value="0">-&#45;&#45;</option>-->
+<!--							<option th:each="league : ${leagues}"-->
+<!--									th:value="${league.leagueId}"-->
+<!--									th:utext="${league.description}"/>-->
+<!--							 </select>-->
+<!--					</div>-->
+					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
+				</form>
+				<hr>
+				<a class="btn btn-light btn-sm active" th:href="@{/places/list}">Powrót do listy obiektów</a>
 			</div>
 		</div>
 	</div>
@@ -76,3 +99,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

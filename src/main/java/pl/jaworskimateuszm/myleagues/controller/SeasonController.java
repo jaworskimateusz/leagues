@@ -11,6 +11,7 @@ import pl.jaworskimateuszm.myleagues.mapper.SeasonMapper;
 import pl.jaworskimateuszm.myleagues.model.League;
 import pl.jaworskimateuszm.myleagues.model.Player;
 import pl.jaworskimateuszm.myleagues.model.Season;
+import pl.jaworskimateuszm.myleagues.utils.Parser;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class SeasonController {
 	public String update(@RequestParam("seasonId") int id, Model model) {
 //		Season season = seasonMapper.findById(id);
 //		model.addAttribute("season", season);
+//		model.addAttribute("leagues", leagues);
 		model.addAttribute("season", new Season(1,2,25, "Sezon wiosenny 2018"));
 		return "/seasons/season-form";
 	}
@@ -66,8 +68,7 @@ public class SeasonController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/seasons/add";
 		}
-
-//		playerMapper.save(player);
+//		seasonMapper.save(season);
 		return "redirect:/seasons/list";
 	}
 	
@@ -78,9 +79,16 @@ public class SeasonController {
 	}
 
 	@GetMapping("/search")
-	public String search(@RequestParam("number") int number, Model model) {
-		//List<Season> seasons = seasonMapper.searchBy(number);
+	public String search(@RequestParam("number") String num, Model model, RedirectAttributes redirectAttributes) {
+		int number = Parser.stringToInt(num);
+		if (number == -1) {
+			redirectAttributes.addFlashAttribute("error", true);
+			return "redirect:/seasons/list";
+		}
+//		List<Season> seasons = seasonMapper.searchBy(number);
 		//model.addAttribute("seasons", seasons);
-		return "/seasons/list";
+		ArrayList<Season> seasons = new ArrayList<Season>();
+		model.addAttribute("notFound", seasons.isEmpty());
+		return "/seasons/list-seasons";
 	}
 }
