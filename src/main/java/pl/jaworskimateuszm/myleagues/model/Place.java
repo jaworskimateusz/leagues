@@ -3,7 +3,6 @@ package pl.jaworskimateuszm.myleagues.model;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public class Place {
@@ -15,9 +14,6 @@ public class Place {
     @NotNull
     @NumberFormat
     private int numberOfHours;
-
-    @NotNull
-    @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
     private String name;
 
     private int confirmed;

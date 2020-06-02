@@ -46,9 +46,14 @@ public class RoundController {
 		model.addAttribute("round", new Round());
 //		List<Game> games = gameMapper.findAll();
 		ArrayList<Game> games = new ArrayList<>();
+		ArrayList<Season> seasons = new ArrayList<>();
 		games.add(new Game(2,6,new Date(),"Warszawianka",1,2,3,4));
 		games.add(new Game(3,7,new Date(),"Spodek Katowicki",1,2,3,4));
+		seasons.add(new Season(1,2,25, "Sezon wiosenny 2018"));
+		seasons.add(new Season(12,52,12, "Sezon wiosenny 2018"));
+		seasons.add(new Season(92,18,525, "Sezon zimowy 2019"));
 		model.addAttribute("games", games);
+		model.addAttribute("seasons", seasons);
 		return "/rounds/round-form";
 	}
 

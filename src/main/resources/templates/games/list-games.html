@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 </head>
 
 <body>
@@ -50,8 +51,10 @@
 						<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
-					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">(księgość)</span>
-					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">(pracownik)</span>
+					[
+						<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+						<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
+					]
 				</a>
 			</li>
 			<li class="nav-item ">
@@ -73,9 +76,34 @@
 					   class="btn btn-outline-dark mr-5">
 						Dodaj Mecz
 					</a>
-					<input class="form-control ml-5 mr-sm-2 nav navbar-nav navbar-right pl-2 col row justify-content-end"
-							   type="search" name="place" placeholder=" Szukaj po miejscu" />
+					<input class="form-control ml-5 mr-sm-2 nav navbar-nav navbar-right pl-2 col-3 row justify-content-end"
+							   type="text" name="place" placeholder="Miejsce" />
 					<button class="btn btn-dark pl-2" style="position:absolute; right: 15px" type="submit">Wyszukaj</button>
+					<br>
+					<div class="row">
+						<div class="input-group date ml-5" id="dateFrom" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input col-8" data-target="#dateFrom"
+								   name="dateFrom" placeholder="Data od "/>
+							<div class="input-group-append" data-target="#dateFrom" data-toggle="datetimepicker">
+								<svg class="bi bi-calendar-date ml-1" width="36px" height="36px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+									<path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+									<path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+								</svg>
+							</div>
+						</div>
+						<div class="input-group date" id="dateTo" data-target-input="nearest">
+							<input type="text" class="form-control datetimepicker-input col-8" data-target="#dateTo"
+								   name="dateTo" placeholder="Data do "/>
+							<div class="input-group-append" data-target="#dateTo" data-toggle="datetimepicker">
+								<svg class="bi bi-calendar-date ml-1" width="36px" height="36px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+									<path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+									<path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+									<path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+								</svg>
+							</div>
+						</div>
+					</div>
 				</form>
 				<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
 					Niepoprawny parametr wyszukiwania.
@@ -126,6 +154,16 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<script type="text/javascript">
+    $('#dateFrom').datetimepicker({
+        format: 'DD/MM/YYYY h:mm'
+    });
+    $('#dateTo').datetimepicker({
+        format: 'DD/MM/YYYY h:mm'
+    });
+</script>
 </body>
 </html>
 

@@ -49,8 +49,10 @@
 						<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
-					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">(księgość)</span>
-					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">(pracownik)</span>
+					[
+					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
+					]
 				</a>
 			</li>
 			<li class="nav-item ">
@@ -75,19 +77,17 @@
 					</div>
 					<input type="hidden" th:field="*{seasonId}" />
 					<input type="hidden" th:field="*{roundId}" />
-					<input type="number" min="0" th:field="*{number}"
-						   class="form-control mb-4 col-4" placeholder="Numer *">
+<!--					<input type="number" min="0" th:field="*{number}"-->
+<!--						   class="form-control mb-4 col-4" placeholder="Numer *">-->
 					<input type="text" th:field="*{description}" maxlength="100"
 						   class="form-control mb-4 col-4" placeholder="Opis *">
 					<label>Wybierz ligę</label>
-					<div style="width: 50%">
-						<select class="form-control selectpicker" th:field="*{roundId}"> <--leagueId here -->
-							<option th:value="0">---</option>
-							<option th:each="league : ${leagues}"
-									th:value="${league.leagueId}"
-									th:utext="${league.description}"/>
-							 </select>
-					</div>
+					<select class="form-control selectpicker col-4" th:field="*{leagueId}">
+						<option th:value="-1">---</option>
+						<option th:each="league : ${leagues}"
+								th:value="${league.leagueId}"
+								th:utext="${league.description} + ', poziom: ' + ${league.level}"/>
+					</select>
 					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
 				</form>
 				<hr>

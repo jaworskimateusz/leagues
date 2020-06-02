@@ -75,10 +75,27 @@ public class GameController {
 	}
 
 	@GetMapping("/search")
-	public String search(@RequestParam("place") String place, Model model, RedirectAttributes redirectAttributes) {
+	public String search(@RequestParam("place") String place,
+						 @RequestParam("dateFrom") String dateFrom,
+						 @RequestParam("dateTo") String dateTo,
+						 Model model) {
 //		List<Game> games = gameMapper.searchBy(place);
 //		model.addAttribute("games", games);
 		ArrayList<Game> games = new ArrayList<Game>();
+		model.addAttribute("games", games);
 		return "/games/list-games";
 	}
+
+	@GetMapping("/add-to-game")
+	public String addToGame(@RequestParam("playerId") int playerId,
+							@RequestParam("gameId") int gameId,
+							@RequestParam("whichOne") String whichOne,
+							Model model) {
+//		Game game = gameMapper.findById(id);
+//		model.addAttribute("game", game);
+//		TODO db operations
+		model.addAttribute("game", new Game(5,7,new Date(),"Spodek Katowicki",1,2,3,4));
+		return "/games/game-form";
+	}
+
 }

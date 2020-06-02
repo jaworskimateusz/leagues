@@ -50,8 +50,10 @@
 						<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
-					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">(księgość)</span>
-					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">(pracownik)</span>
+					[
+					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
+					]
 				</a>
 			</li>
 			<li class="nav-item ">
@@ -68,8 +70,8 @@
 			<div class="col-md-12">
 				<h3 class="mt-5 pt-4">Lista Obiektów</h3>
 				<hr>
-				<form th:action="@{/places/search}" class="form-inline mb-3">
-					<a th:href="@{/places/add}"
+				<form th:action="@{/places/search}"  class="form-inline mb-3">
+					<a th:href="@{/places/add} " sec:authorize="hasAnyRole('ROLE_ORGANISER')"
 					   class="btn btn-outline-dark mr-5">
 						Dodaj Obiekt
 					</a>
@@ -102,13 +104,13 @@
 						<td th:text="${place.confirmedFlag} ? 'potwierdzono' : 'nie potwierdzono'" />
 
 						<td class="form-inline">
-							<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+							<div sec:authorize="hasAnyRole('ROLE_ACCOUNTANT')">
 								<a th:href="@{/places/update(placeId=${place.placeId})}"
 								   class="btn btn-outline-secondary btn-sm">
 									Edytuj
 								</a>
 							</div>
-							<div sec:authorize="hasRole('ROLE_WORKER')">
+							<div sec:authorize="hasRole('ROLE_ORGANISER')">
 								<a th:href="@{/places/delete(placeId=${place.placeId})}"
 								   class="btn btn-dark btn-sm ml-1"
 								   onclick="if (!(confirm('Czy na pewno chcesz usunąć obiekt?'))) return false">

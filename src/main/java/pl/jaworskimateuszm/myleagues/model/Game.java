@@ -14,11 +14,7 @@ public class Game {
     private long setId;
     private long firstPlayerId;
     private long secondPlayerId;
-
-    @NumberFormat
     private int firstPlayerScore;
-
-    @NumberFormat
     private int secondPlayerScore;
 
     @NotNull

@@ -2,6 +2,7 @@ package pl.jaworskimateuszm.myleagues.model;
 
 import org.springframework.format.annotation.NumberFormat;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,6 +13,7 @@ public class Season {
     private long roundId;
 
     @NotNull
+    @Min(value = 0)
     private long leagueId;
 
     @NotNull

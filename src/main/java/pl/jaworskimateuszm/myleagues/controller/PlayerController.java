@@ -56,6 +56,14 @@ public class PlayerController {
 		model.addAttribute("player", new Player(1,2,3, "Maciej", "Kot", "99020212321"));
 		return "/players/player-form";
 	}
+
+	@GetMapping("/detail")
+	public String detail(@RequestParam("playerId") int id, Model model) {
+//		Player player = playerMapper.findById(id);
+//		model.addAttribute("player", player);
+		model.addAttribute("player", new Player(1,2,3, "Maciej", "Kot", "99020212321"));
+		return "/players/player-detail";
+	}
 	
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("player") Player player, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
@@ -74,10 +82,29 @@ public class PlayerController {
 	}
 	
 	@GetMapping("/search")
-	public String search(@RequestParam("pesel") String pesel, Model model) {
+	public String search(@RequestParam("pesel") String pesel,
+						 @RequestParam("playerId") int playerId,
+						 @RequestParam("gameId") int gameId,
+						 @RequestParam("whichOne") String whichOne,
+						 Model model) {
 //		List<Player> players = playerMapper.searchBy(pesel);
 		ArrayList<Player> players = new ArrayList<>();
 		model.addAttribute("players", players);
+		model.addAttribute("gameId", gameId);
+		model.addAttribute("whichOne", whichOne.equals("") ? null : whichOne);
+		return "/players/list-players";
+	}
+
+	@GetMapping("/choose-player")
+	public String choosePlayer(@RequestParam("gameId") int gameId, @RequestParam("whichOne") String whichOne, Model model) {
+//		List<Player> players = playerMapper.findAll();
+		ArrayList<Player> players = new ArrayList<>();
+		players.add(new Player(3,6,9, "Jakub", "Zieliński", "92020212321"));
+		players.add(new Player(4,8,12, "Mateusz", "Kowalski", "91020212321"));
+		players.add(new Player(5,10,16, "Anna", "Nowak", "97020212321"));
+		model.addAttribute("gameId", gameId);
+		model.addAttribute("players", players);
+		model.addAttribute("whichOne", whichOne);
 		return "/players/list-players";
 	}
 

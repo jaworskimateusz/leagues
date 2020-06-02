@@ -50,8 +50,10 @@
 						<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
-					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">(księgość)</span>
-					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">(pracownik)</span>
+					[
+						<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+						<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
+					]
 				</a>
 			</li>
 			<li class="nav-item ">
@@ -91,10 +93,29 @@
 							</svg>
 						</div>
 					</div>
-					<input type="number" min="0" th:field="*{firstPlayerScore}"
-						   class="form-control mb-4 col-4" placeholder="Wynik pierwszego zawodnika *">
-					<input type="number" min="0" th:field="*{secondPlayerScore}"
-						   class="form-control mb-4 col-4" placeholder="Wynik drugiego zawodnika *">
+					<div class="row">
+						<span sec:authorize="hasAnyRole('ROLE_WORKER')">
+							<a th:href="@{/players/choose-player(gameId=${game.gameId}, whichOne='first')}"
+							   class="btn btn-outline-secondary ml-3">
+								Dodaj zawodnika
+							</a>
+						</span>
+						<input type="number" min="0" th:field="*{firstPlayerScore}"
+								   class="form-control mb-4 col-1 ml-2" >
+						<label class="ml-2 pt-3">Wynik I</label>
+					</div>
+					<div class="row">
+						<span sec:authorize="hasAnyRole('ROLE_WORKER')">
+							<a th:href="@{/players/choose-player(gameId=${game.gameId}, whichOne='second')}"
+							   class="btn btn-outline-secondary ml-3">
+								Dodaj zawodnika
+							</a>
+						</span>
+						<input type="number" min="0" th:field="*{secondPlayerScore}"
+							   class="form-control mb-4 col-1 ml-2">
+						<label class="ml-2 pt-3">Wynik II</label>
+					</div>
+
 <!--					<label>Wpisz wyniki kolejnych setów</label>-->
 <!--					<div style="width: 50%">-->
 <!--						<select class="form-control selectpicker" th:field="*{gameSetId}"> <&#45;&#45;leagueId here &ndash;&gt;-->

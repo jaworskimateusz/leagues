@@ -5,10 +5,12 @@ import org.springframework.format.annotation.NumberFormat;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.beans.Transient;
 
 public class Round {
     private long roundId;
     private long gameId;
+    private long seasonId;
 
     @NotNull
     @NumberFormat
@@ -27,6 +29,15 @@ public class Round {
 
     public Round() {
 
+    }
+
+    @Transient
+    public long getSeasonId() {
+        return seasonId;
+    }
+
+    public void setSeasonId(long seasonId) {
+        this.seasonId = seasonId;
     }
 
     public long getRoundId() {

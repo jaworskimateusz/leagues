@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/places/**").hasAnyRole("WORKER", "ACCOUNTANT")
                 .antMatchers("/rounds/**").hasRole("WORKER")
                 .antMatchers("/games/**").hasRole("WORKER")
-                .antMatchers("/seasons/**").hasRole("WORKER")
+                .antMatchers("/seasons/**").hasAnyRole("WORKER", "ACCOUNTANT")
                 .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin()

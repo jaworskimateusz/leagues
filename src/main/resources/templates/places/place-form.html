@@ -49,8 +49,10 @@
 						<path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
-					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">(księgość)</span>
-					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">(pracownik)</span>
+					[
+					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
+					]
 				</a>
 			</li>
 			<li class="nav-item ">
@@ -74,18 +76,19 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{placeId}" />
-					<input type="text" th:field="*{name}" maxlength="45"
+					<h5 class="mb-4" th:text="${place.name}" sec:authorize="hasRole('ROLE_ACCOUNTANT')"></h5>
+					<input type="text" th:field="*{name}" maxlength="45" sec:authorize="hasRole('ROLE_ORGANISER')"
 						   class="form-control mb-4 col-4" placeholder="Nazwa *">
 					<input type="number" min="0" th:field="*{numberOfHours}"
 						   class="form-control mb-4 col-4" placeholder="Liczba godzin *">
 					<input type="number" th:field="*{cost}" min="0" step="any"
-						   class="form-control mb-4 col-4" placeholder="Łączny koszt *">
+						   class="form-control mb-4 col-4" placeholder="Łączny koszt (zł) *">
 <!--					<input type="number" th:field="*{confirmed}"-->
 <!--						   class="form-control mb-4 col-4" placeholder="Potwierdzono*">-->
 					<label>Potwierdzenie opłaty obiektu:</label>
 					<input type="checkbox" name="confirmedFlag" th:checked="*{confirmedFlag} ? false: true" />
 					<br>
-					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
+					<button type="submit" class="btn btn-outline-dark btn-sm">Zapisz</button>
 				</form>
 				<hr>
 				<a class="btn btn-light btn-sm active" th:href="@{/places/list}">Powrót do listy obiektów</a>
