@@ -103,6 +103,8 @@
 						<input type="number" min="0" th:field="*{firstPlayerScore}"
 								   class="form-control mb-4 col-1 ml-2" >
 						<label class="ml-2 pt-3">Wynik I</label>
+						<label th:if="${firstPlayer != null}" class="ml-2 pt-3"
+							   th:text=" '(' + ${firstPlayer.name} + ' ' +${firstPlayer.surname} + ')' "></label>
 					</div>
 					<div class="row">
 						<span sec:authorize="hasAnyRole('ROLE_WORKER')">
@@ -114,20 +116,50 @@
 						<input type="number" min="0" th:field="*{secondPlayerScore}"
 							   class="form-control mb-4 col-1 ml-2">
 						<label class="ml-2 pt-3">Wynik II</label>
+						<label th:if="${secondPlayer != null}" class="ml-2 pt-3"
+							   th:text=" '(' + ${secondPlayer.name} + ' ' +${secondPlayer.surname} + ')' "></label>
 					</div>
 
-<!--					<label>Wpisz wyniki kolejnych setów</label>-->
-<!--					<div style="width: 50%">-->
-<!--						<select class="form-control selectpicker" th:field="*{gameSetId}"> <&#45;&#45;leagueId here &ndash;&gt;-->
-<!--							<option th:value="0">-&#45;&#45;</option>-->
-<!--							<option th:each="gameSet : ${gameSets}"-->
-<!--									th:value="${gameSet.gameSetId}"-->
-<!--									th:utext="${gameSet.number}"/>-->
-<!--							 </select>-->
-<!--							 &lt;!&ndash;TODO &ndash;&gt;-->
-<!--					</div>-->
-
-					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
+					<div th:if="${gameSets != null}" class="col-6 small">
+						<h6>Sety</h6>
+						<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>Numer setu</th>
+								<th>Wynik I zawodnika</th>
+								<th>Wynik II zawodnika</th>
+								<th>Akcja</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="gameSet : ${gameSets}">
+								<td th:text="${gameSet.setNumber}" />
+								<td th:text="${gameSet.firstPlayerScore}" />
+								<td th:text="${gameSet.secondPlayerScore}" />
+								<td class="form-inline">
+									<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+										<a th:href="@{/games/update-set(gameId=*{gameId}, gameSetId=${gameSet.gameSetId})}"
+										   class="btn btn-outline-secondary btn-sm">
+											Edytuj
+										</a>
+									</div>
+									<div sec:authorize="hasRole('ROLE_WORKER')">
+										<a th:href="@{/games/delete-set(gameId=${game.gameId}, gameSetId=${gameSet.gameSetId})}"
+										   class="btn btn-dark btn-sm ml-1"
+										   onclick="if (!(confirm('Czy na pewno chcesz usunąć set?'))) return false">
+											Usuń
+										</a>
+									</div>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<a th:href="@{/games/add-set(gameId=${game.gameId})}"
+					   class="btn btn-outline-dark btn-sm mr-5">
+						Dodaj Set
+					</a>
+					<br>
+					<button type="submit" class="btn btn-outline-dark btn-md mt-5">Zapisz</button>
 				</form>
 				<hr>
 				<a class="btn btn-light btn-sm active" th:href="@{/games/list}">Powrót do listy meczy</a>

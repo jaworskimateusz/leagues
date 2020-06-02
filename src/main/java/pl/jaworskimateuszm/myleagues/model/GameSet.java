@@ -1,7 +1,7 @@
 package pl.jaworskimateuszm.myleagues.model;
 
 public class GameSet {
-    private long setId;
+    private long gameSetId;
     private int setNumber;
     private int firstPlayerScore;
     private int secondPlayerScore;
@@ -9,19 +9,19 @@ public class GameSet {
     public GameSet() {
     }
 
-    public GameSet(long setId, int setNumber, int firstPlayerScore, int secondPlayerScore) {
-        this.setId = setId;
+    public GameSet(long gameSetId, int setNumber, int firstPlayerScore, int secondPlayerScore) {
+        this.gameSetId = gameSetId;
         this.setNumber = setNumber;
         this.firstPlayerScore = firstPlayerScore;
         this.secondPlayerScore = secondPlayerScore;
     }
 
-    public long getSetId() {
-        return setId;
+    public long getGameSetId() {
+        return gameSetId;
     }
 
-    public void setSetId(long setId) {
-        this.setId = setId;
+    public void setGameSetId(long gameSetId) {
+        this.gameSetId = gameSetId;
     }
 
     public int getSetNumber() {
