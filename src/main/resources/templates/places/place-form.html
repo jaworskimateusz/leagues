@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:>
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="pl">
 <head>
 	<title>Formularz obiektu</title>
 	<meta charset="utf-8">
@@ -74,16 +74,17 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{placeId}" />
-					<input type="text" th:field="*{name}"
+					<input type="text" th:field="*{name}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Nazwa *">
-					<input type="number" th:field="*{numberOfHours}"
+					<input type="number" min="0" th:field="*{numberOfHours}"
 						   class="form-control mb-4 col-4" placeholder="Liczba godzin *">
-					<input type="number" th:field="*{numberOfHours}"
+					<input type="number" th:field="*{cost}" min="0" step="any"
 						   class="form-control mb-4 col-4" placeholder="Łączny koszt *">
 <!--					<input type="number" th:field="*{confirmed}"-->
 <!--						   class="form-control mb-4 col-4" placeholder="Potwierdzono*">-->
 					<label>Potwierdzenie opłaty obiektu:</label>
 					<input type="checkbox" name="confirmedFlag" th:checked="*{confirmedFlag} ? false: true" />
+					<br>
 					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
 				</form>
 				<hr>

@@ -22,7 +22,7 @@ public class Game {
     private int secondPlayerScore;
 
     @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "dd/MM/yyyy h:mm")
     private Date gameDate;
 
     @NotEmpty

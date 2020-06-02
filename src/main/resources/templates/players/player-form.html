@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="pl">
 <head>
 	<title>Formularz zawodnika</title>
 	<meta charset="utf-8">
@@ -77,11 +77,11 @@
 					<input type="hidden" th:field="*{playerId}" />
 					<input type="hidden" th:field="*{feeId}" />
 					<input type="hidden" th:field="*{disciplineId}" />
-					<input type="text" th:field="*{name}"
+					<input type="text" th:field="*{name}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Imie">
-					<input type="text" th:field="*{surname}"
+					<input type="text" th:field="*{surname}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Nazwisko">
-					<input type="number" th:field="*{pesel}"
+					<input type="number" min="0" th:field="*{pesel}" max="11"
 						   class="form-control mb-4 col-4" placeholder="Numer Pesel">
 					<div style="width: 50%">
 						<select class="form-control selectpicker" th:field="*{leagueIds}" multiple> <--leagueId here -->

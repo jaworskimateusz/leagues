@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:>
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="pl">
 <head>
 	<title>Formularz kolejki</title>
 	<meta charset="utf-8">
@@ -74,9 +74,9 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{roundId}" />
-					<input type="number" th:field="*{number}"
+					<input type="number" min="0" th:field="*{number}"
 						   class="form-control mb-4 col-4" placeholder="Numer *">
-					<input type="text" th:field="*{discipline}"
+					<input type="text" th:field="*{discipline}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Dyscyplina *">
 					<label>Wybierz mecze</label>
 					<div style="width: 50%">

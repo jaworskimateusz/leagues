@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" xmlns:>
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" lang="pl">
 <head>
 	<title>Formularz meczu</title>
 	<meta charset="utf-8">
@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
 	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 </head>
 
 <body>
@@ -77,15 +78,24 @@
 					<input type="hidden" th:field="*{setId}" />
 					<input type="hidden" th:field="*{firstPlayerId}" />
 					<input type="hidden" th:field="*{secondPlayerId}" />
-					<input type="text" th:field="*{place}"
+					<input type="text" th:field="*{place}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Miejsce *">
-					<input type="date" th:field="*{gameDate}"
-						   class="form-control mb-4 col-4" placeholder="Termin *">
-					<input type="number" th:field="*{firstPlayerScore}"
+					<div class="input-group date" id="gameDate" data-target-input="nearest">
+						<input type="text" class="form-control mb-4 col-4 datetimepicker-input" data-target="#gameDate"
+							   th:field="*{gameDate}" id="date" placeholder="Termin *"/>
+						<div class="input-group-append" data-target="#gameDate" data-toggle="datetimepicker">
+							<svg class="bi bi-calendar-date ml-1" width="36px" height="36px" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+								<path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+								<path fill-rule="evenodd" d="M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1zm1-3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2z"/>
+								<path fill-rule="evenodd" d="M3.5 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5zm9 0a.5.5 0 0 1 .5.5V1a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 .5-.5z"/>
+							</svg>
+						</div>
+					</div>
+					<input type="number" min="0" th:field="*{firstPlayerScore}"
 						   class="form-control mb-4 col-4" placeholder="Wynik pierwszego zawodnika *">
-					<input type="number" th:field="*{secondPlayerScore}"
+					<input type="number" min="0" th:field="*{secondPlayerScore}"
 						   class="form-control mb-4 col-4" placeholder="Wynik drugiego zawodnika *">
-					<label>Wpisz wyniki kolejnych setów</label>
+<!--					<label>Wpisz wyniki kolejnych setów</label>-->
 <!--					<div style="width: 50%">-->
 <!--						<select class="form-control selectpicker" th:field="*{gameSetId}"> <&#45;&#45;leagueId here &ndash;&gt;-->
 <!--							<option th:value="0">-&#45;&#45;</option>-->
@@ -95,6 +105,7 @@
 <!--							 </select>-->
 <!--							 &lt;!&ndash;TODO &ndash;&gt;-->
 <!--					</div>-->
+
 					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
 				</form>
 				<hr>
@@ -106,11 +117,15 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+<script type="text/javascript">
+    $('#gameDate').datetimepicker({
+        format: 'DD/MM/YYYY h:mm'
+    });
+</script>
 </body>
 </html>
-
-
-
 
 
 

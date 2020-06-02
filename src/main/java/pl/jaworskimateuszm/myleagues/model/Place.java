@@ -22,7 +22,7 @@ public class Place {
 
     private int confirmed;
 
-    private Boolean confirmedFlag;
+    private Boolean confirmedFlag = false;
 
     public Place() {
 

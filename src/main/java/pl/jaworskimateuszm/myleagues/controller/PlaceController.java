@@ -56,6 +56,7 @@ public class PlaceController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/places/add";
 		}
+
 //		placeMapper.save(place);
 		return "redirect:/places/list";
 	}

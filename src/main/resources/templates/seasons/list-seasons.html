@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
+<html lang="pl"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
@@ -76,7 +76,7 @@
 					<input type="hidden" name="confirm" th:value="${confirm != null} ? ${confirm} : -1">
 					<input type="hidden" name="playerId" th:value="${playerId != null} ? ${playerId} : -1">
 					<input class="form-control ml-5 mr-sm-2 nav navbar-nav navbar-right pl-2 col row justify-content-end"
-							   type="search" name="number" placeholder=" Szukaj po numerze" />
+						   type="number" min="0" name="number" placeholder=" Szukaj po numerze" />
 					<button class="btn btn-dark pl-2" style="position:absolute; right: 15px" type="submit">Wyszukaj</button>
 				</form>
 				<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
