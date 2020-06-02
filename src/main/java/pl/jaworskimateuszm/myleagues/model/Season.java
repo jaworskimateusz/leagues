@@ -10,6 +10,8 @@ import java.beans.Transient;
 public class Season {
     private long seasonId;
     private long roundId;
+
+    @NotNull
     private long leagueId;
 
     @NotNull

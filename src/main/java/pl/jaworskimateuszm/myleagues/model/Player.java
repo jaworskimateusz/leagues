@@ -1,8 +1,11 @@
 package pl.jaworskimateuszm.myleagues.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.beans.Transient;
 
 public class Player {
     private long playerId;
@@ -17,16 +20,40 @@ public class Player {
     @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
     private String surname;
 
-    public Player(long playerId, long feeId, long disciplineId, String name, String surname) {
+    @Size(max = 11, message= "Maksymalna długość to 45 znaków.")
+    private String pesel;
+
+    @NotEmpty
+    private int[] leagueIds;
+
+    public Player(long playerId, long feeId, long disciplineId, String name, String surname,  String pesel) {
         this.playerId = playerId;
         this.feeId = feeId;
         this.disciplineId = disciplineId;
         this.name = name;
         this.surname = surname;
+        this.pesel = pesel;
     }
 
     public Player() {
 
+    }
+
+    @Transient
+    public int[] getLeagueIds() {
+        return leagueIds;
+    }
+
+    public void setLeagueIds(int[] leagueIds) {
+        this.leagueIds = leagueIds;
+    }
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
     }
 
     public long getPlayerId() {

@@ -76,16 +76,14 @@
 					<input type="hidden" th:field="*{placeId}" />
 					<input type="text" th:field="*{name}"
 						   class="form-control mb-4 col-4" placeholder="Nazwa *">
-					<input type="text" th:field="*{numberOfHours}"
+					<input type="number" th:field="*{numberOfHours}"
 						   class="form-control mb-4 col-4" placeholder="Liczba godzin *">
-<!--					<div style="width: 50%">-->
-<!--						<select class="form-control selectpicker" th:field="*{roundId}"> <&#45;&#45;leagueId here &ndash;&gt;-->
-<!--							<option th:value="0">-&#45;&#45;</option>-->
-<!--							<option th:each="league : ${leagues}"-->
-<!--									th:value="${league.leagueId}"-->
-<!--									th:utext="${league.description}"/>-->
-<!--							 </select>-->
-<!--					</div>-->
+					<input type="number" th:field="*{numberOfHours}"
+						   class="form-control mb-4 col-4" placeholder="Łączny koszt *">
+<!--					<input type="number" th:field="*{confirmed}"-->
+<!--						   class="form-control mb-4 col-4" placeholder="Potwierdzono*">-->
+					<label>Potwierdzenie opłaty obiektu:</label>
+					<input type="checkbox" name="confirmedFlag" th:checked="*{confirmedFlag} ? false: true" />
 					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>
 				</form>
 				<hr>

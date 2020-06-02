@@ -10,6 +10,7 @@ import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.mapper.SeasonMapper;
 import pl.jaworskimateuszm.myleagues.model.League;
 import pl.jaworskimateuszm.myleagues.model.Player;
+import pl.jaworskimateuszm.myleagues.model.Round;
 import pl.jaworskimateuszm.myleagues.model.Season;
 import pl.jaworskimateuszm.myleagues.utils.Parser;
 
@@ -78,17 +79,64 @@ public class SeasonController {
 		return "redirect:/seasons/list";
 	}
 
+
 	@GetMapping("/search")
-	public String search(@RequestParam("number") String num, Model model, RedirectAttributes redirectAttributes) {
+	public String search(@RequestParam("number") String num,
+						 @RequestParam("confirm") int confirm,
+						 @RequestParam("playerId") int playerId,
+						 Model model,
+						 RedirectAttributes redirectAttributes) {
 		int number = Parser.stringToInt(num);
 		if (number == -1) {
 			redirectAttributes.addFlashAttribute("error", true);
-			return "redirect:/seasons/list";
+			return "redirect:/rounds/list";
 		}
-//		List<Season> seasons = seasonMapper.searchBy(number);
-		//model.addAttribute("seasons", seasons);
-		ArrayList<Season> seasons = new ArrayList<Season>();
-		model.addAttribute("notFound", seasons.isEmpty());
+		//List<Season> seasons = seasonMapper.searchBy(number);
+		ArrayList<Season> seasons = new ArrayList<>();
+		seasons.add(new Season(1,2,25, "Zimowy 2019"));
+		model.addAttribute("seasons", seasons);
+		model.addAttribute("confirm", confirm);
+		model.addAttribute("playerId", playerId);
+
+		return "/seasons/list-seasons";
+	}
+
+	@GetMapping("/manage-seasons")
+	public String manageSeasonPayment(@RequestParam("playerId") int id, Model model) {
+//		Player player = playerMapper.findById(id);
+//		List<Season> seasons = seasonMapper.findAll();
+
+		ArrayList<Season> seasons = new ArrayList<>();
+		seasons.add(new Season(1,2,25, "Zimowy 2019"));
+		model.addAttribute("seasons", seasons);
+		model.addAttribute("confirm", 1);
+		model.addAttribute("playerId", id);
+		return "/seasons/list-seasons";
+	}
+
+	@GetMapping("/confirm-payment")
+	public String confirmPayment(@RequestParam("seasonId") int seasonId,
+								 @RequestParam("playerId") int playerId,
+								 Model model) {
+//		List<Season> seasons = seasonMapper.findAll();
+//		TODO confirm payment where seasonId is seasonId
+//		TODO seasons for playerId
+		ArrayList<Season> seasons = new ArrayList<>();
+		model.addAttribute("seasons", seasons);
+		model.addAttribute("playerId", playerId);
+		model.addAttribute("confirm", 1);
+		return "/seasons/list-seasons";
+	}
+
+	@GetMapping("/cancel-payment")
+	public String cancelPayment(@RequestParam("seasonId") int seasonId,
+								@RequestParam("playerId") int playerId,
+								Model model) {
+//		List<Season> seasons = seasonMapper.findAll();
+		ArrayList<Season> seasons = new ArrayList<>();
+		model.addAttribute("seasons", seasons);
+		model.addAttribute("playerId", playerId);
+		model.addAttribute("confirm", 1);
 		return "/seasons/list-seasons";
 	}
 }

@@ -79,7 +79,6 @@ public class GameController {
 //		List<Game> games = gameMapper.searchBy(place);
 //		model.addAttribute("games", games);
 		ArrayList<Game> games = new ArrayList<Game>();
-		model.addAttribute("notFound", games.isEmpty());
 		return "/games/list-games";
 	}
 }

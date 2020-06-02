@@ -71,6 +71,9 @@
 				<p class="h4 mb-4">Dodawanie/edycja zawodnika</p>
 				<form th:action="@{/players/save}"
 					  th:object="${player}" method="POST">
+					<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+						Podane wartości są niepoprawne.
+					</div>
 					<input type="hidden" th:field="*{playerId}" />
 					<input type="hidden" th:field="*{feeId}" />
 					<input type="hidden" th:field="*{disciplineId}" />
@@ -78,7 +81,16 @@
 						   class="form-control mb-4 col-4" placeholder="Imie">
 					<input type="text" th:field="*{surname}"
 						   class="form-control mb-4 col-4" placeholder="Nazwisko">
-					<button type="submit" class="btn btn-outline-dark btn-sm">Zapisz</button>
+					<input type="number" th:field="*{pesel}"
+						   class="form-control mb-4 col-4" placeholder="Numer Pesel">
+					<div style="width: 50%">
+						<select class="form-control selectpicker" th:field="*{leagueIds}" multiple> <--leagueId here -->
+							<option th:each="league : ${leagues}"
+									th:value="${league.leagueId}"
+									th:utext="${league.description}"/>
+						</select>
+					</div>
+					<button type="submit" class="btn btn-outline-dark btn-sm mt-2" >Zapisz</button>
 				</form>
 				<hr>
 				<a class="btn btn-light btn-sm active" th:href="@{/players/list}">Powrót do listy zawodników</a>

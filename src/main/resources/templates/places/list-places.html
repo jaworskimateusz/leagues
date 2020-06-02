@@ -68,19 +68,19 @@
 			<div class="col-md-12">
 				<h3 class="mt-5 pt-4">Lista Obiektów</h3>
 				<hr>
-				<form th:action="@{/seasons/search}" class="form-inline mb-3">
-					<a th:href="@{/seasons/add}"
+				<form th:action="@{/places/search}" class="form-inline mb-3">
+					<a th:href="@{/places/add}"
 					   class="btn btn-outline-dark mr-5">
 						Dodaj Obiekt
 					</a>
 					<input class="form-control ml-5 mr-sm-2 nav navbar-nav navbar-right pl-2 col row justify-content-end"
-							   type="search" name="number" placeholder=" Szukaj po numerze" />
+							   type="search" name="number" placeholder=" Szukaj po nazwie" />
 					<button class="btn btn-dark pl-2" style="position:absolute; right: 15px" type="submit">Wyszukaj</button>
 				</form>
 				<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
 					Niepoprawny parametr wyszukiwania.
 				</div>
-				<div th:if="${notFound == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+				<div th:if="${places.isEmpty()}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
 					Nie znaleziono.
 				</div>
 				<table class="table table-bordered table-striped">
@@ -89,7 +89,7 @@
 						<th>Nazwa obiektu</th>
 						<th>Łączny koszt</th>
 						<th>Liczba godzin</th>
-						<th>Czy Potwierdzono</th>
+						<th>Potwierdzenie opłaty</th>
 						<th>Akcja</th>
 					</tr>
 					</thead>
@@ -97,9 +97,9 @@
 					<tr th:each="place : ${places}">
 
 						<td th:text="${place.name}" />
-						<td th:text="${place.cost}" />
+						<td th:text="${place.cost} + ' ' + zł" />
 						<td th:text="${place.numberOfHours}" />
-						<td th:text="${place.isConfirmed}" />
+						<td th:text="${place.confirmedFlag} ? 'potwierdzono' : 'nie potwierdzono'" />
 
 						<td class="form-inline">
 							<div sec:authorize="hasAnyRole('ROLE_WORKER')">

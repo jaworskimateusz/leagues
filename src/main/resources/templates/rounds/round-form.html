@@ -74,7 +74,7 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{roundId}" />
-					<input type="text" th:field="*{number}"
+					<input type="number" th:field="*{number}"
 						   class="form-control mb-4 col-4" placeholder="Numer *">
 					<input type="text" th:field="*{discipline}"
 						   class="form-control mb-4 col-4" placeholder="Dyscyplina *">
@@ -83,7 +83,7 @@
 						<select class="form-control selectpicker" th:field="*{gameId}" multiple> <--gameId here -->
 							<option th:each="game : ${games}"
 									th:value="${game.gameId}"
-									th:utext="${game.place}"/>
+									th:text="${game.place} + ', ' + ${{game.gameDate}}"/>
 							 </select>
 					</div>
 					<button type="submit" class="btn btn-outline-dark btn-sm mt-5">Zapisz</button>

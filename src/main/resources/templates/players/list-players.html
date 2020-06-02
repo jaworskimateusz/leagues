@@ -68,51 +68,66 @@
 			<div class="col-md-12">
 				<h3 class="mt-5 pt-4">Lista zawodników</h3>
 				<hr>
-				<form th:action="@{/players/search}" class="form-inline">
+				<form th:action="@{/players/search}" class="form-inline mb-3">
 					<a th:href="@{/players/add}"
-					   class="btn btn-outline-dark btn-sm mr-5 mb-3">
+					   class="btn btn-outline-dark mr-5">
 						Dodaj Zawodnika
 					</a>
-<!--						<input class="form-control  ml-5 mr-sm-2 mb-3 nav navbar-nav navbar-right pl-2"-->
-<!--							   type="search" name="playerSurname" placeholder=" Szukaj po nazwisku" />-->
-<!--						<button class="btn btn-dark mb-3 pl-2"  type="submit">Wyszukaj</button>-->
+					<input class="form-control ml-5 mr-sm-2 nav navbar-nav navbar-right pl-2 col row justify-content-end"
+						   type="search" name="pesel" placeholder=" Szukaj po numerze pesel" />
+					<button class="btn btn-dark pl-2" style="position:absolute; right: 15px" type="submit">Wyszukaj</button>
 				</form>
+				<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+					Niepoprawny parametr wyszukiwania.
+				</div>
+				<div th:if="${players.isEmpty()}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
+					Nie znaleziono.
+				</div>
 				<table class="table table-bordered table-striped">
 					<thead class="thead-dark">
-					<tr>
-						<th>Id zawodnika</th>
-						<th>Id wpisowego</th>
-						<th>Id dyscypliny</th>
-						<th>Imie</th>
-						<th>Nazwisko</th>
-						<th>Akcja</th>
-					</tr>
+						<tr>
+							<th>Imie</th>
+							<th>Nazwisko</th>
+							<th>Pesel</th>
+							<th>Akcja</th>
+							<th>Zarządzanie wpłatą</th>
+						</tr>
 					</thead>
 					<tbody>
-					<tr th:each="player : ${players}">
-
-						<td th:text="${player.playerId}" />
-						<td th:text="${player.feeId}" />
-						<td th:text="${player.disciplineId}" />
-						<td th:text="${player.name}" />
-						<td th:text="${player.surname}" />
-
-						<td class="form-inline">
-							<div sec:authorize="hasAnyRole('ROLE_WORKER')">
-								<a th:href="@{/players/update(playerId=${player.playerId})}"
-								   class="btn btn-outline-secondary btn-sm">
-									Edytuj
-								</a>
-							</div>
-							<div sec:authorize="hasRole('ROLE_WORKER')">
-								<a th:href="@{/players/delete(playerId=${player.playerId})}"
-								   class="btn btn-dark btn-sm ml-1"
-								   onclick="if (!(confirm('Czy na pewno chcesz usunąć zawodnika?'))) return false">
-									Usuń
-								</a>
-							</div>
-						</td>
-					</tr>
+						<tr th:each="player : ${players}">
+							<td th:text="${player.name}" />
+							<td th:text="${player.surname}" />
+							<td th:text="${player.pesel}" />
+							<td class="form-inline">
+								<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+									<a th:href="@{/players/update(playerId=${player.playerId})}"
+									   class="btn btn-outline-secondary btn-sm">
+										Edytuj
+									</a>
+								</div>
+								<div sec:authorize="hasRole('ROLE_WORKER')">
+									<a th:href="@{/players/delete(playerId=${player.playerId})}"
+									   class="btn btn-dark btn-sm ml-1"
+									   onclick="if (!(confirm('Czy na pewno chcesz usunąć zawodnika?'))) return false">
+										Usuń
+									</a>
+								</div>
+							</td>
+							<td>
+								<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+									<a th:href="@{/rounds/manage-rounds(playerId=${player.playerId})}"
+									   class="btn btn-outline-secondary btn-sm">
+										Za kolejki
+									</a>
+								</div>
+								<div sec:authorize="hasAnyRole('ROLE_ACCOUNTANT')">
+									<a th:href="@{/seasons/manage-seasons(playerId=${player.playerId})}"
+									   class="btn btn-outline-secondary btn-sm mt-1">
+										Za sezony
+									</a>
+								</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

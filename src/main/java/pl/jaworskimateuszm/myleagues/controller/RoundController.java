@@ -80,15 +80,63 @@ public class RoundController {
 	}
 
 	@GetMapping("/search")
-	public String search(@RequestParam("number") String num, Model model, RedirectAttributes redirectAttributes) {
+	public String search(@RequestParam("number") String num,
+						 @RequestParam("confirm") int confirm,
+						 @RequestParam("playerId") int playerId,
+						 Model model,
+						 RedirectAttributes redirectAttributes) {
 		int number = Parser.stringToInt(num);
 		if (number == -1) {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/rounds/list";
 		}
 		//List<Round> rounds = roundMapper.searchBy(number);
-		//model.addAttribute("rounds", rounds);
-		//model.addAttribute("notFound", rounds.isEmpty());
+		ArrayList<Round> rounds = new ArrayList<>();
+		rounds.add(new Round(1,2,25, "Tenis ziemny"));
+		model.addAttribute("rounds", rounds);
+		model.addAttribute("confirm", confirm);
+		model.addAttribute("playerId", playerId);
+
 		return "/rounds/list-rounds";
 	}
+
+	@GetMapping("/manage-rounds")
+	public String manageRoundPayment(@RequestParam("playerId") int id, Model model) {
+//		Player player = playerMapper.findById(id);
+//		List<Round> rounds = roundMapper.findAll();
+
+		ArrayList<Round> rounds = new ArrayList<>();
+		rounds.add(new Round(1,2,25, "Tenis ziemny"));
+		model.addAttribute("rounds", rounds);
+		model.addAttribute("confirm", 1);
+		model.addAttribute("playerId", id);
+		return "/rounds/list-rounds";
+	}
+
+	@GetMapping("/confirm-payment")
+	public String confirmPayment(@RequestParam("roundId") int roundId,
+								 @RequestParam("playerId") int playerId,
+								 Model model) {
+//		List<Round> rounds = roundMapper.findAll();
+//		TODO confirm payment where roundId is roundId
+//		TODO get rounds for playerId
+		ArrayList<Round> rounds = new ArrayList<>();
+		model.addAttribute("rounds", rounds);
+		model.addAttribute("playerId", playerId);
+		model.addAttribute("confirm", 1);
+		return "/rounds/list-rounds";
+	}
+
+	@GetMapping("/cancel-payment")
+	public String cancelPayment(@RequestParam("roundId") int roundId,
+								@RequestParam("playerId") int playerId,
+								Model model) {
+//		List<Round> rounds = roundMapper.findAll();
+		ArrayList<Round> rounds = new ArrayList<>();
+		model.addAttribute("rounds", rounds);
+		model.addAttribute("playerId", playerId);
+		model.addAttribute("confirm", 1);
+		return "/rounds/list-rounds";
+	}
+
 }

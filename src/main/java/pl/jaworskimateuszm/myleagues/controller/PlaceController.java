@@ -25,10 +25,12 @@ public class PlaceController {
 
 	@GetMapping("/list")
 	public String listPlaces(Model model) {
-		ArrayList<Place> places = new ArrayList<>();
-
 		//List<Place> places = placeMapper.findAll();
-		
+		ArrayList<Place> places = new ArrayList<>();
+		places.add(new Place(1, new BigDecimal("1000.05"),30,"Spodek Katowice",true));
+		places.add(new Place(2, new BigDecimal("2000.05"),35,"Spodek Warszawa",true));
+		places.add(new Place(4, new BigDecimal("3000.05"),32,"Spodek Piaseczno",false));
+		model.addAttribute("places", places);
 		model.addAttribute("places", places);
 		return "/places/list-places";
 	}
@@ -37,9 +39,6 @@ public class PlaceController {
 	public String add(Model model) {
 		model.addAttribute("place", new Place());
 //		List<Place> places = placeMapper.findAll();
-		ArrayList<Place> places = new ArrayList<>();
-		places.add(new Place(1, new BigDecimal("1000.05"),30,"Spodek Katowice",1));
-		model.addAttribute("places", places);
 		return "/places/place-form";
 	}
 
@@ -47,7 +46,7 @@ public class PlaceController {
 	public String update(@RequestParam("placeId") int id, Model model) {
 //		Place place = placeMapper.findById(id);
 //		model.addAttribute("place", place);
-		model.addAttribute("place", new Place(1, new BigDecimal("1000.05"),30,"Spodek Katowice",1));
+		model.addAttribute("place", new Place(1, new BigDecimal("1000.05"),30,"Spodek Katowice",true));
 		return "/places/place-form";
 	}
 	
@@ -55,7 +54,7 @@ public class PlaceController {
 	public String save(@Valid @ModelAttribute("place") Place place, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("error", true);
-			return "redirect:/place/add";
+			return "redirect:/places/add";
 		}
 //		placeMapper.save(place);
 		return "redirect:/places/list";
@@ -72,7 +71,6 @@ public class PlaceController {
 //		List<Place> places = placeMapper.searchBy(name);
 //		model.addAttribute("places", places);
 //		ArrayList<Place> places = new ArrayList<Place>();
-//		model.addAttribute("notFound", places.isEmpty());
 		return "/places/list-places";
 	}
 }

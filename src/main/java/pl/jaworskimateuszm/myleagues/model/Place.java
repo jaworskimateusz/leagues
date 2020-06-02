@@ -1,12 +1,10 @@
 package pl.jaworskimateuszm.myleagues.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.Date;
 
 public class Place {
     private long placeId;
@@ -22,19 +20,36 @@ public class Place {
     @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
     private String name;
 
-    @NotNull
-    private int isConfirmed;
+    private int confirmed;
+
+    private Boolean confirmedFlag;
 
     public Place() {
 
     }
 
-    public Place(long placeId, BigDecimal cost, int numberOfHours, String name, int isConfirmed) {
+    public Place(long placeId, BigDecimal cost, int numberOfHours, String name, Boolean confirmedFlag) {
         this.placeId = placeId;
         this.cost = cost;
         this.numberOfHours = numberOfHours;
         this.name = name;
-        this.isConfirmed = isConfirmed;
+        this.confirmedFlag = confirmedFlag;
+    }
+
+    public int getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(int confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public Boolean getConfirmedFlag() {
+        return confirmedFlag;
+    }
+
+    public void setConfirmedFlag(Boolean confirmedFlag) {
+        this.confirmedFlag = confirmedFlag;
     }
 
     public long getPlaceId() {
@@ -69,11 +84,4 @@ public class Place {
         this.name = name;
     }
 
-    public int getIsConfirmed() {
-        return isConfirmed;
-    }
-
-    public void setIsConfirmed(int isConfirmed) {
-        this.isConfirmed = isConfirmed;
-    }
 }
