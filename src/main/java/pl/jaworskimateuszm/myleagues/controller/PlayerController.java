@@ -1,10 +1,12 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.jaworskimateuszm.myleagues.mapper.LeagueMapper;
 import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.model.League;
 import pl.jaworskimateuszm.myleagues.model.Player;
@@ -17,9 +19,11 @@ import java.util.ArrayList;
 public class PlayerController {
 
 	private PlayerMapper playerMapper;
+	private LeagueMapper leagueMapper;
 
-	public PlayerController(PlayerMapper playerMapper) {
+	public PlayerController(PlayerMapper playerMapper, LeagueMapper leagueMapper) {
 		this.playerMapper = playerMapper;
+		this.leagueMapper = leagueMapper;
 	}
 
 	@GetMapping("/list")
@@ -41,10 +45,12 @@ public class PlayerController {
 	@GetMapping("/add")
 	public String add(Model model) {
 		model.addAttribute("player", new Player());
-		ArrayList<League> leagues = new ArrayList<>();
-		leagues.add(new League(2,6,6,"WYS","Liga tenisa stołowego"));
-		leagues.add(new League(4,7,1,"ŚRED","Liga tenisa ziemnego"));
-		leagues.add(new League(7,8,2,"POCZ","Liga squatch'a"));
+//		ArrayList<League> leagues = new ArrayList<>();
+		League l = leagueMapper.findById(5);
+		leagueMapper.update(new League(8,4,0,"WYS","Liga boksu"));
+		List<League> leagues = leagueMapper.findAll();
+
+
 		model.addAttribute("leagues", leagues);
 		return "/players/player-form";
 	}
