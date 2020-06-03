@@ -27,7 +27,7 @@
 				</a>
 			</li>
 			<li class="nav-item ml-12" sec:authorize="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_WORKER')">
-				<a class="nav-link" href="@{/players/list}">Zawodnicy</a>
+				<a class="nav-link" th:href="@{/players/list}">Zawodnicy</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
 				<a class="nav-link" th:href="@{/places/list}">Obiekty</a>
@@ -76,13 +76,11 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{playerId}" />
-					<input type="hidden" th:field="*{feeId}" />
-					<input type="hidden" th:field="*{disciplineId}" />
 					<input type="text" th:field="*{name}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Imie">
 					<input type="text" th:field="*{surname}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Nazwisko">
-					<input type="number" min="0" th:field="*{pesel}" max="11"
+					<input type="number" min="0" th:field="*{pesel}"
 						   class="form-control mb-4 col-4" placeholder="Numer Pesel">
 					<div style="width: 50%">
 						<select class="form-control selectpicker" th:field="*{leagueIds}" multiple> <--leagueId here -->

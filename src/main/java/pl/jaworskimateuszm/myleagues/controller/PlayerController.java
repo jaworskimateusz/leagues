@@ -1,5 +1,6 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import pl.jaworskimateuszm.myleagues.model.League;
 import pl.jaworskimateuszm.myleagues.model.Player;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/players")
@@ -28,16 +28,7 @@ public class PlayerController {
 
 	@GetMapping("/list")
 	public String listPlayers(Model model) {
-
-		ArrayList<Player> players = new ArrayList<Player>();
-		players.add(new Player(1,2,3, "Maciej", "Kot", "96020212321"));
-		players.add(new Player(2,4,6, "Michał", "Woj", "95020212321"));
-		players.add(new Player(3,6,9, "Jakub", "Zieliński", "92020212321"));
-		players.add(new Player(4,8,12, "Mateusz", "Kowalski", "91020212321"));
-		players.add(new Player(5,10,16, "Anna", "Nowak", "97020212321"));
-
-		//List<Player> players = playerMapper.findAll();
-		
+		List<Player> players = playerMapper.findAll();
 		model.addAttribute("players", players);
 		return "/players/list-players";
 	}
@@ -45,29 +36,25 @@ public class PlayerController {
 	@GetMapping("/add")
 	public String add(Model model) {
 		model.addAttribute("player", new Player());
-//		ArrayList<League> leagues = new ArrayList<>();
-		League l = leagueMapper.findById(5);
-		leagueMapper.update(new League(8,4,0,"WYS","Liga boksu"));
 		List<League> leagues = leagueMapper.findAll();
-
-
 		model.addAttribute("leagues", leagues);
 		return "/players/player-form";
 	}
 
 	@GetMapping("/update")
 	public String update(@RequestParam("playerId") int id, Model model) {
-//		Player player = playerMapper.findById(id);
-//		model.addAttribute("player", player);
-		model.addAttribute("player", new Player(1,2,3, "Maciej", "Kot", "99020212321"));
+		Player player = playerMapper.findById(id);
+		List<League> leagues = leagueMapper.findAll();
+		model.addAttribute("leagues", leagues);
+		model.addAttribute("player", player);
 		return "/players/player-form";
 	}
 
 	@GetMapping("/detail")
 	public String detail(@RequestParam("playerId") int id, Model model) {
-//		Player player = playerMapper.findById(id);
-//		model.addAttribute("player", player);
-		model.addAttribute("player", new Player(1,2,3, "Maciej", "Kot", "99020212321"));
+		Player player = playerMapper.findById(id);
+		model.addAttribute("player", player);
+//		TODO add huge query for player details
 		return "/players/player-detail";
 	}
 	
@@ -77,13 +64,21 @@ public class PlayerController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/players/add";
 		}
-//		playerMapper.save(player);
+		if (playerMapper.findById(player.getPlayerId()) != null) {
+			playerMapper.update(player);
+			Arrays.stream(player.getLeagueIds()).forEach(leagueId -> playerMapper.updatePlayerLeague(player.getPlayerId(), leagueId));
+		} else {
+			playerMapper.insert(player);
+			Arrays.stream(player.getLeagueIds()).forEach(leagueId -> playerMapper.insertPlayerLeague(player.getPlayerId(), leagueId));
+		}
+
 		return "redirect:/players/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("playerId") int playerId) {
-//		playerMapper.deleteById(playerId);
+		playerMapper.deletePlayerLeagueById(playerId);
+		playerMapper.deleteById(playerId);
 		return "redirect:/players/list";
 	}
 	
@@ -93,8 +88,7 @@ public class PlayerController {
 						 @RequestParam("gameId") int gameId,
 						 @RequestParam("whichOne") String whichOne,
 						 Model model) {
-//		List<Player> players = playerMapper.searchBy(pesel);
-		ArrayList<Player> players = new ArrayList<>();
+		List<Player> players = playerMapper.searchBy(pesel);
 		model.addAttribute("players", players);
 		model.addAttribute("gameId", gameId);
 		model.addAttribute("whichOne", whichOne.equals("") ? null : whichOne);
@@ -103,11 +97,7 @@ public class PlayerController {
 
 	@GetMapping("/choose-player")
 	public String choosePlayer(@RequestParam("gameId") int gameId, @RequestParam("whichOne") String whichOne, Model model) {
-//		List<Player> players = playerMapper.findAll();
-		ArrayList<Player> players = new ArrayList<>();
-		players.add(new Player(3,6,9, "Jakub", "Zieliński", "92020212321"));
-		players.add(new Player(4,8,12, "Mateusz", "Kowalski", "91020212321"));
-		players.add(new Player(5,10,16, "Anna", "Nowak", "97020212321"));
+		List<Player> players = playerMapper.findAll(); //TODO ON gameId
 		model.addAttribute("gameId", gameId);
 		model.addAttribute("players", players);
 		model.addAttribute("whichOne", whichOne);

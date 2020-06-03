@@ -77,9 +77,8 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{gameId}" />
-					<input type="hidden" th:field="*{setId}" />
-					<input type="hidden" th:field="*{firstPlayerId}" />
-					<input type="hidden" th:field="*{secondPlayerId}" />
+<!--					<input type="hidden" th:field="*{firstPlayerId}" />-->
+<!--					<input type="hidden" th:field="*{secondPlayerId}" />-->
 					<input type="text" th:field="*{place}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Miejsce *">
 					<div class="input-group date" id="gameDate" data-target-input="nearest">
@@ -93,6 +92,13 @@
 							</svg>
 						</div>
 					</div>
+					<label>Wybierz kolejkę</label>
+					<select class="form-control selectpicker col-4 mb-5" th:field="*{roundId}">
+						<option th:value="-1">---</option>
+						<option th:each="round : ${rounds}"
+								th:value="${round.roundId}"
+								th:utext="${round.discipline} + ', numer: ' + ${round.number}"/>
+					</select>
 					<div class="row">
 						<span sec:authorize="hasAnyRole('ROLE_WORKER')">
 							<a th:href="@{/players/choose-player(gameId=${game.gameId}, whichOne='first')}"
@@ -174,7 +180,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
 <script type="text/javascript">
     $('#gameDate').datetimepicker({
-        format: 'DD/MM/YYYY h:mm'
+        format: 'YYYY-MM-DD h:mm'
     });
 </script>
 </body>

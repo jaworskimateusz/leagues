@@ -80,12 +80,6 @@
 <!--						   class="form-control mb-4 col-4" placeholder="Numer *">-->
 					<input type="text" th:field="*{discipline}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Dyscyplina *">
-					<label>Wybierz mecze</label>
-					<select class="form-control selectpicker col-4 mb-4" th:field="*{gameId}" multiple>
-						<option th:each="game : ${games}"
-								th:value="${game.gameId}"
-								th:text="${game.place} + ', ' + ${{game.gameDate}}"/>
-					</select>
 					<label>Wybierz sezon</label>
 					<select class="form-control selectpicker col-4" th:field="*{seasonId}">
 						<option th:value="-1">---</option>

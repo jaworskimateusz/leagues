@@ -1,16 +1,18 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.jaworskimateuszm.myleagues.mapper.LeagueMapper;
-import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.mapper.SeasonMapper;
+import pl.jaworskimateuszm.myleagues.model.Fee;
 import pl.jaworskimateuszm.myleagues.model.League;
-import pl.jaworskimateuszm.myleagues.model.Player;
-import pl.jaworskimateuszm.myleagues.model.Round;
 import pl.jaworskimateuszm.myleagues.model.Season;
 import pl.jaworskimateuszm.myleagues.utils.Parser;
 
@@ -31,35 +33,25 @@ public class SeasonController {
 
 	@GetMapping("/list")
 	public String listSeasons(Model model) {
-		ArrayList<Season> seasons = new ArrayList<>();
-		seasons.add(new Season(1,2,25, "Sezon wiosenny 2018"));
-		seasons.add(new Season(2,11,2552112, "Sezon letni 2018"));
-		seasons.add(new Season(12,52,22115, "Sezon wiosenny 2018"));
-		seasons.add(new Season(92,18,5125, "Sezon zimowy 2019"));
-		//List<Season> seasons = seasonMapper.findAll();
-		
+		List<Season> seasons = seasonMapper.findAll();
 		model.addAttribute("seasons", seasons);
 		return "/seasons/list-seasons";
 	}
 	
 	@GetMapping("/add")
 	public String add(Model model) {
+		List<League> leagues = leagueMapper.findAll();
 		model.addAttribute("season", new Season());
-//		List<League> leagues = leaguesMapper.findAll();
-		ArrayList<League> leagues = new ArrayList<>();
-		leagues.add(new League(2,6,6,"WYS","Liga tenisa stołowego"));
-		leagues.add(new League(4,7,1,"ŚRED","Liga tenisa ziemnego"));
-		leagues.add(new League(7,8,2,"POCZ","Liga squatch'a"));
 		model.addAttribute("leagues", leagues);
 		return "/seasons/season-form";
 	}
 
 	@GetMapping("/update")
 	public String update(@RequestParam("seasonId") int id, Model model) {
-//		Season season = seasonMapper.findById(id);
-//		model.addAttribute("season", season);
-//		model.addAttribute("leagues", leagues);
-		model.addAttribute("season", new Season(1,2,25, "Sezon wiosenny 2018"));
+		Season season = seasonMapper.findById(id);
+		List<League> leagues = leagueMapper.findAll();
+		model.addAttribute("season", season);
+		model.addAttribute("leagues", leagues);
 		return "/seasons/season-form";
 	}
 	
@@ -69,13 +61,18 @@ public class SeasonController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/seasons/add";
 		}
-//		seasonMapper.save(season);
+		if (seasonMapper.findById(season.getSeasonId()) != null) {
+			seasonMapper.update(season);
+		} else {
+			seasonMapper.insert(season);
+		}
 		return "redirect:/seasons/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("seasonId") int id) {
-//		seasonMapper.deleteById(id);
+//		seasonMapper.deleteSeasonFeeById(id);
+		seasonMapper.deleteById(id);
 		return "redirect:/seasons/list";
 	}
 
@@ -91,13 +88,10 @@ public class SeasonController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/rounds/list";
 		}
-		//List<Season> seasons = seasonMapper.searchBy(number);
-		ArrayList<Season> seasons = new ArrayList<>();
-		seasons.add(new Season(1,2,25, "Zimowy 2019"));
+		List<Season> seasons = seasonMapper.findAllByNumber(number);
 		model.addAttribute("seasons", seasons);
 		model.addAttribute("confirm", confirm);
 		model.addAttribute("playerId", playerId);
-
 		return "/seasons/list-seasons";
 	}
 

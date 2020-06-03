@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class Place {
-    private long placeId;
+    private int placeId;
 
     @NotNull
     private BigDecimal cost;
@@ -24,7 +24,7 @@ public class Place {
 
     }
 
-    public Place(long placeId, BigDecimal cost, int numberOfHours, String name, Boolean confirmedFlag) {
+    public Place(int placeId, BigDecimal cost, int numberOfHours, String name, Boolean confirmedFlag) {
         this.placeId = placeId;
         this.cost = cost;
         this.numberOfHours = numberOfHours;
@@ -48,11 +48,11 @@ public class Place {
         this.confirmedFlag = confirmedFlag;
     }
 
-    public long getPlaceId() {
+    public int getPlaceId() {
         return placeId;
     }
 
-    public void setPlaceId(long placeId) {
+    public void setPlaceId(int placeId) {
         this.placeId = placeId;
     }
 

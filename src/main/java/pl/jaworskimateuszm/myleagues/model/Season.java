@@ -8,11 +8,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class Season {
-    private long seasonId;
+    private int seasonId;
 
     @NotNull
-    @Min(value = 0)
-    private long leagueId;
+    @Min(0)
+    private int leagueId;
 
     @NotNull
     @NumberFormat
@@ -25,27 +25,27 @@ public class Season {
     public Season() {
     }
 
-    public Season(long seasonId, long leagueId, int number, String description) {
+    public Season(int seasonId, int leagueId, int number, String description) {
         this.seasonId = seasonId;
         this.leagueId = leagueId;
         this.number = number;
         this.description = description;
     }
 
-    public long getLeagueId() {
-        return leagueId;
-    }
-
-    public void setLeagueId(long leagueId) {
-        this.leagueId = leagueId;
-    }
-
-    public long getSeasonId() {
+    public int getSeasonId() {
         return seasonId;
     }
 
-    public void setSeasonId(long seasonId) {
+    public void setSeasonId(int seasonId) {
         this.seasonId = seasonId;
+    }
+
+    public int getLeagueId() {
+        return leagueId;
+    }
+
+    public void setLeagueId(int leagueId) {
+        this.leagueId = leagueId;
     }
 
     public int getNumber() {

@@ -1,17 +1,11 @@
 package pl.jaworskimateuszm.myleagues.model;
 
-import org.hibernate.validator.constraints.Length;
-
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.beans.Transient;
 
 public class Player {
-    private long playerId;
-    private long feeId;
-    private long disciplineId;
-
+    private int playerId;
     @NotEmpty
     @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
     private String name;
@@ -26,10 +20,8 @@ public class Player {
     @NotEmpty
     private int[] leagueIds;
 
-    public Player(long playerId, long feeId, long disciplineId, String name, String surname,  String pesel) {
+    public Player(int playerId, String name, String surname,  String pesel) {
         this.playerId = playerId;
-        this.feeId = feeId;
-        this.disciplineId = disciplineId;
         this.name = name;
         this.surname = surname;
         this.pesel = pesel;
@@ -56,28 +48,12 @@ public class Player {
         this.pesel = pesel;
     }
 
-    public long getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(long playerId) {
+    public void setPlayerId(int playerId) {
         this.playerId = playerId;
-    }
-
-    public long getFeeId() {
-        return feeId;
-    }
-
-    public void setFeeId(long feeId) {
-        this.feeId = feeId;
-    }
-
-    public long getDisciplineId() {
-        return disciplineId;
-    }
-
-    public void setDisciplineId(long disciplineId) {
-        this.disciplineId = disciplineId;
     }
 
     public String getName() {

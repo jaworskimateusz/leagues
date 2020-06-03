@@ -2,22 +2,21 @@ package pl.jaworskimateuszm.myleagues.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 public class Game {
 
-    private long gameId;
-    private long roundId;
-    private long firstPlayerId;
-    private long secondPlayerId;
+    private int gameId;
+
+    @Min(0)
+    private int roundId;
     private int firstPlayerScore;
     private int secondPlayerScore;
 
     @NotNull
-    @DateTimeFormat(pattern = "dd/MM/yyyy h:mm")
+//    @DateTimeFormat(pattern = "dd/MM/yyyy h:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd h:mm")
     private Date gameDate;
 
     @NotEmpty
@@ -27,63 +26,29 @@ public class Game {
     public Game() {
     }
 
-    public Game(long gameId, long roundId, Date gameDate, String place, long firstPlayerId, long secondPlayerId, int firstPlayerScore, int secondPlayerScore) {
+    public Game(int gameId, int roundId, Date gameDate, String place, int firstPlayerScore, int secondPlayerScore) {
         this.gameId = gameId;
         this.roundId = roundId;
         this.gameDate = gameDate;
         this.place = place;
-        this.firstPlayerId = firstPlayerId;
-        this.secondPlayerId = secondPlayerId;
         this.firstPlayerScore = firstPlayerScore;
         this.secondPlayerScore = secondPlayerScore;
     }
 
-    public long getGameId() {
+    public int getGameId() {
         return gameId;
     }
 
-    public void setGameId(long gameId) {
+    public void setGameId(int gameId) {
         this.gameId = gameId;
     }
 
-    public long getRoundId() {
+    public int getRoundId() {
         return roundId;
     }
 
-    public void setRoundId(long roundId) {
+    public void setRoundId(int roundId) {
         this.roundId = roundId;
-    }
-
-    public Date getGameDate() {
-        return gameDate;
-    }
-
-    public void setGameDate(Date gameDate) {
-        this.gameDate = gameDate;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    public long getFirstPlayerId() {
-        return firstPlayerId;
-    }
-
-    public void setFirstPlayerId(long firstPlayerId) {
-        this.firstPlayerId = firstPlayerId;
-    }
-
-    public long getSecondPlayerId() {
-        return secondPlayerId;
-    }
-
-    public void setSecondPlayerId(long secondPlayerId) {
-        this.secondPlayerId = secondPlayerId;
     }
 
     public int getFirstPlayerScore() {
@@ -100,5 +65,21 @@ public class Game {
 
     public void setSecondPlayerScore(int secondPlayerScore) {
         this.secondPlayerScore = secondPlayerScore;
+    }
+
+    public Date getGameDate() {
+        return gameDate;
+    }
+
+    public void setGameDate(Date gameDate) {
+        this.gameDate = gameDate;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 }

@@ -1,5 +1,7 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,18 +27,17 @@ public class RoundController {
 
 	private RoundMapper roundMapper;
 	private GameMapper gameMapper;
+	private SeasonMapper seasonMapper;
 
-	public RoundController(RoundMapper roundMapper, GameMapper gameMapper) {
+	public RoundController(RoundMapper roundMapper, GameMapper gameMapper, SeasonMapper seasonMapper) {
 		this.roundMapper = roundMapper;
 		this.gameMapper = gameMapper;
+		this.seasonMapper = seasonMapper;
 	}
 
 	@GetMapping("/list")
 	public String listRounds(Model model) {
-		ArrayList<Round> rounds = new ArrayList<>();
-		rounds.add(new Round(1,2,25, "Tenis ziemny"));
-		//List<Round> rounds = roundMapper.findAll();
-		
+		List<Round> rounds = roundMapper.findAll();
 		model.addAttribute("rounds", rounds);
 		return "/rounds/list-rounds";
 	}
@@ -44,25 +45,17 @@ public class RoundController {
 	@GetMapping("/add")
 	public String add(Model model) {
 		model.addAttribute("round", new Round());
-//		List<Game> games = gameMapper.findAll();
-		ArrayList<Game> games = new ArrayList<>();
-		ArrayList<Season> seasons = new ArrayList<>();
-		games.add(new Game(2,6,new Date(),"Warszawianka",1,2,3,4));
-		games.add(new Game(3,7,new Date(),"Spodek Katowicki",1,2,3,4));
-		seasons.add(new Season(1,2,25, "Sezon wiosenny 2018"));
-		seasons.add(new Season(12,52,12, "Sezon wiosenny 2018"));
-		seasons.add(new Season(92,18,525, "Sezon zimowy 2019"));
-		model.addAttribute("games", games);
+		List<Season> seasons = seasonMapper.findAll();
 		model.addAttribute("seasons", seasons);
 		return "/rounds/round-form";
 	}
 
 	@GetMapping("/update")
 	public String update(@RequestParam("roundId") int id, Model model) {
-//		Round round = roundMapper.findById(id);
-//		model.addAttribute("round", round);
-//		model.addAttribute("games", games);
-		model.addAttribute("round",new Round(1,2,25, "Tenis ziemny"));
+		Round round = roundMapper.findById(id);
+		List<Season> seasons = seasonMapper.findAll();
+		model.addAttribute("round", round);
+		model.addAttribute("seasons", seasons);
 		return "/rounds/round-form";
 	}
 	
@@ -72,15 +65,19 @@ public class RoundController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/rounds/add";
 		}
-
-//		here payment should be automatically created for specific round
-//		roundMapper.save(round);
+		if (roundMapper.findById(round.getRoundId()) != null) {
+			roundMapper.update(round);
+		} else {
+			roundMapper.insert(round);
+		}
+//		here payment should be automatically created for specific round TODO to consider
 		return "redirect:/rounds/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("roundId") int id) {
-//		roundMapper.deleteById(id);
+//		roundMapper.deleteRoundFeeById(id);
+		roundMapper.deleteById(id);
 		return "redirect:/rounds/list";
 	}
 
@@ -95,9 +92,7 @@ public class RoundController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/rounds/list";
 		}
-		//List<Round> rounds = roundMapper.searchBy(number);
-		ArrayList<Round> rounds = new ArrayList<>();
-		rounds.add(new Round(1,2,25, "Tenis ziemny"));
+		List<Round> rounds = roundMapper.findAllByNumber(number);
 		model.addAttribute("rounds", rounds);
 		model.addAttribute("confirm", confirm);
 		model.addAttribute("playerId", playerId);
@@ -108,10 +103,7 @@ public class RoundController {
 	@GetMapping("/manage-rounds")
 	public String manageRoundPayment(@RequestParam("playerId") int id, Model model) {
 //		Player player = playerMapper.findById(id);
-//		List<Round> rounds = roundMapper.findAll();
-
-		ArrayList<Round> rounds = new ArrayList<>();
-		rounds.add(new Round(1,2,25, "Tenis ziemny"));
+		List<Round> rounds = roundMapper.findAll();
 		model.addAttribute("rounds", rounds);
 		model.addAttribute("confirm", 1);
 		model.addAttribute("playerId", id);
@@ -122,10 +114,9 @@ public class RoundController {
 	public String confirmPayment(@RequestParam("roundId") int roundId,
 								 @RequestParam("playerId") int playerId,
 								 Model model) {
-//		List<Round> rounds = roundMapper.findAll();
+		List<Round> rounds = roundMapper.findAll();
 //		TODO confirm payment where roundId is roundId
 //		TODO get rounds for playerId
-		ArrayList<Round> rounds = new ArrayList<>();
 		model.addAttribute("rounds", rounds);
 		model.addAttribute("playerId", playerId);
 		model.addAttribute("confirm", 1);
@@ -136,8 +127,7 @@ public class RoundController {
 	public String cancelPayment(@RequestParam("roundId") int roundId,
 								@RequestParam("playerId") int playerId,
 								Model model) {
-//		List<Round> rounds = roundMapper.findAll();
-		ArrayList<Round> rounds = new ArrayList<>();
+		List<Round> rounds = roundMapper.findAll();
 		model.addAttribute("rounds", rounds);
 		model.addAttribute("playerId", playerId);
 		model.addAttribute("confirm", 1);

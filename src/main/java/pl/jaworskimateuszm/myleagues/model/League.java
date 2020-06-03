@@ -4,9 +4,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class League {
-    private long leagueId;
-    private long objectId;
-    private long disciplineId;
+    private int leagueId;
+    private int objectId;
+    private int disciplineId;
 
     @NotEmpty
     @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
@@ -19,7 +19,7 @@ public class League {
     public League() {
     }
 
-    public League(long leagueId, long objectId, long disciplineId, String level, String description) {
+    public League(int leagueId, int objectId, int disciplineId, String level,  String description) {
         this.leagueId = leagueId;
         this.objectId = objectId;
         this.disciplineId = disciplineId;
@@ -27,27 +27,27 @@ public class League {
         this.description = description;
     }
 
-    public long getLeagueId() {
+    public int getLeagueId() {
         return leagueId;
     }
 
-    public void setLeagueId(long leagueId) {
+    public void setLeagueId(int leagueId) {
         this.leagueId = leagueId;
     }
 
-    public long getObjectId() {
+    public int getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(long objectId) {
+    public void setObjectId(int objectId) {
         this.objectId = objectId;
     }
 
-    public long getDisciplineId() {
+    public int getDisciplineId() {
         return disciplineId;
     }
 
-    public void setDisciplineId(long disciplineId) {
+    public void setDisciplineId(int disciplineId) {
         this.disciplineId = disciplineId;
     }
 

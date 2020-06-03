@@ -71,9 +71,8 @@
 				<h3 class="mt-5 pt-4">Zawodnicy</h3>
 				<hr>
 				<p class="h4 mb-4">Szczegóły zawodnika</p>
-					<h4>Imie: Marcin</h4>
-					<h4>Nazwisko:  Kot</h4>
-					<h5>Pesel: 98020233444</h5>
+					<h4 th:text="${player.name} + ' ' + ${player.surname}"></h4>
+					<h6 th:text="${player.pesel}"></h6>
 				<table class="table table-bordered table-striped">
 					<thead class="thead-dark">
 					<tr>
