@@ -6,11 +6,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.beans.Transient;
 
 public class Season {
     private long seasonId;
-    private long roundId;
 
     @NotNull
     @Min(value = 0)
@@ -27,29 +25,19 @@ public class Season {
     public Season() {
     }
 
-    public Season(long seasonId, long roundId, int number, String description) {
+    public Season(long seasonId, long leagueId, int number, String description) {
         this.seasonId = seasonId;
-        this.roundId = roundId;
+        this.leagueId = leagueId;
         this.number = number;
         this.description = description;
     }
 
-    @Transient
     public long getLeagueId() {
         return leagueId;
     }
 
-    @Transient
     public void setLeagueId(long leagueId) {
         this.leagueId = leagueId;
-    }
-
-    public long getRoundId() {
-        return roundId;
-    }
-
-    public void setRoundId(long roundId) {
-        this.roundId = roundId;
     }
 
     public long getSeasonId() {

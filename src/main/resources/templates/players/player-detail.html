@@ -28,7 +28,7 @@
 				</a>
 			</li>
 			<li class="nav-item ml-12" sec:authorize="hasAnyRole('ROLE_ACCOUNTANT', 'ROLE_WORKER')">
-				<a class="nav-link" href="@{/players/list}">Zawodnicy</a>
+				<a class="nav-link" th:href="@{/players/list}">Zawodnicy</a>
 			</li>
 			<li class="nav-item" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
 				<a class="nav-link" th:href="@{/places/list}">Obiekty</a>

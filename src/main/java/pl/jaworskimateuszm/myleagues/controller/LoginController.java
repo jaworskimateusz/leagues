@@ -2,8 +2,6 @@ package pl.jaworskimateuszm.myleagues.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.mapper.UserMapper;
 import pl.jaworskimateuszm.myleagues.model.User;
 

@@ -21,7 +21,7 @@ public class UserController {
         return userMapper.findAll();
     }
 
-    @GetMapping("/username/{username}")
+    @GetMapping("/login/{username}")
     public User getOne(@PathVariable String username) {
         return userMapper.findByUsername(username);
     }

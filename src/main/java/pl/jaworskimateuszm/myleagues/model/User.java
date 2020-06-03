@@ -4,7 +4,10 @@ public class User {
 
     private String username;
     private String password;
-    private int enabled;
+    private String enabled;
+
+    public User() {
+    }
 
     public String getUsername() {
         return username;
@@ -22,11 +25,11 @@ public class User {
         this.password = password;
     }
 
-    public int getEnabled() {
+    public String getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(int enabled) {
+    public void setEnabled(String enabled) {
         this.enabled = enabled;
     }
 }

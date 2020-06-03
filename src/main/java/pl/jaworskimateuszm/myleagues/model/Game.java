@@ -1,7 +1,6 @@
 package pl.jaworskimateuszm.myleagues.model;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,7 +10,7 @@ import java.util.Date;
 public class Game {
 
     private long gameId;
-    private long setId;
+    private long roundId;
     private long firstPlayerId;
     private long secondPlayerId;
     private int firstPlayerScore;
@@ -28,9 +27,9 @@ public class Game {
     public Game() {
     }
 
-    public Game(long gameId, long setId, Date gameDate, String place, long firstPlayerId, long secondPlayerId, int firstPlayerScore, int secondPlayerScore) {
+    public Game(long gameId, long roundId, Date gameDate, String place, long firstPlayerId, long secondPlayerId, int firstPlayerScore, int secondPlayerScore) {
         this.gameId = gameId;
-        this.setId = setId;
+        this.roundId = roundId;
         this.gameDate = gameDate;
         this.place = place;
         this.firstPlayerId = firstPlayerId;
@@ -47,12 +46,12 @@ public class Game {
         this.gameId = gameId;
     }
 
-    public long getSetId() {
-        return setId;
+    public long getRoundId() {
+        return roundId;
     }
 
-    public void setSetId(long setId) {
-        this.setId = setId;
+    public void setRoundId(long roundId) {
+        this.roundId = roundId;
     }
 
     public Date getGameDate() {

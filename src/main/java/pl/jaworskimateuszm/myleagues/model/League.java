@@ -1,15 +1,12 @@
 package pl.jaworskimateuszm.myleagues.model;
 
-import org.springframework.format.annotation.NumberFormat;
-
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class League {
     private long leagueId;
     private long objectId;
-    private long seasonId;
+    private long disciplineId;
 
     @NotEmpty
     @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
@@ -22,10 +19,10 @@ public class League {
     public League() {
     }
 
-    public League(long leagueId, long objectId, long seasonId, String level, String description) {
+    public League(long leagueId, long objectId, long disciplineId, String level, String description) {
         this.leagueId = leagueId;
         this.objectId = objectId;
-        this.seasonId = seasonId;
+        this.disciplineId = disciplineId;
         this.level = level;
         this.description = description;
     }
@@ -46,12 +43,12 @@ public class League {
         this.objectId = objectId;
     }
 
-    public long getSeasonId() {
-        return seasonId;
+    public long getDisciplineId() {
+        return disciplineId;
     }
 
-    public void setSeasonId(long seasonId) {
-        this.seasonId = seasonId;
+    public void setDisciplineId(long disciplineId) {
+        this.disciplineId = disciplineId;
     }
 
     public String getLevel() {

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.jaworskimateuszm.myleagues.mapper.UserMapper;
@@ -28,10 +27,9 @@ public class UserService implements UserDetailsService {
         org.springframework.security.core.userdetails.User.UserBuilder builder = null;
         if (user != null) {
             builder = org.springframework.security.core.userdetails.User.withUsername(username);
-            builder.password(bCryptPasswordEncoder.encode(user.getPassword()));
-//            builder.roles("ACCOUNTANT"); //TODO
-            builder.roles("WORKER"); //TODO
-//            builder.roles("WORKER", "ACCOUNTANT"); //TODO
+            builder.password(bCryptPasswordEncoder.encode(user.getPassword())); //TODO
+            builder.roles("WORKER"); // in this project user has one role
+//            builder.roles("ACCOUNTANT"); // in this project user has one role
         } else {
             throw new UsernameNotFoundException("User not found.");
         }
