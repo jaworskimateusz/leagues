@@ -115,8 +115,8 @@
 						</table>
 					</div>
 					<input type="hidden" th:field="*{gameId}" />
-<!--					<input type="hidden" th:field="*{firstPlayerId}" />-->
-<!--					<input type="hidden" th:field="*{secondPlayerId}" />-->
+					<input type="hidden" th:field="*{firstPlayerId}" />
+					<input type="hidden" th:field="*{secondPlayerId}" />
 					<input type="text" th:field="*{place}" maxlength="45"
 						   class="form-control mb-4 col-4" placeholder="Miejsce *">
 					<div class="input-group date" id="gameDate" data-target-input="nearest">
@@ -138,10 +138,17 @@
 								th:utext="${round.discipline} + ', numer: ' + ${round.number}"/>
 					</select>
 					<div class="row">
-						<span sec:authorize="hasAnyRole('ROLE_WORKER')">
+						<span th:if="${game.firstPlayerId == 0}" sec:authorize="hasAnyRole('ROLE_WORKER')">
 							<a th:href="@{/players/choose-player(gameId=${game.gameId}, whichOne='first')}"
 							   class="btn btn-outline-secondary ml-3">
 								Dodaj zawodnika
+							</a>
+						</span>
+						<span th:if="${game.firstPlayerId != 0}" sec:authorize="hasAnyRole('ROLE_WORKER')">
+							<a th:href="@{/games/delete-first-player-from-game(playerId=${game.firstPlayerId}, gameId=${game.gameId})}"
+							   class="btn btn-dark ml-3"
+							   onclick="if (!(confirm('Czy na pewno chcesz usunąć pierwszego zawodnika z meczu?'))) return false">
+								Usuń
 							</a>
 						</span>
 						<input type="number" min="0" th:field="*{firstPlayerScore}"
@@ -151,10 +158,17 @@
 							   th:text=" '(' + ${firstPlayer.name} + ' ' +${firstPlayer.surname} + ')' "></label>
 					</div>
 					<div class="row">
-						<span sec:authorize="hasAnyRole('ROLE_WORKER')">
+						<span th:if="${game.secondPlayerId == 0}" sec:authorize="hasAnyRole('ROLE_WORKER')">
 							<a th:href="@{/players/choose-player(gameId=${game.gameId}, whichOne='second')}"
 							   class="btn btn-outline-secondary ml-3">
 								Dodaj zawodnika
+							</a>
+						</span>
+						<span th:if="${game.secondPlayerId != 0}" sec:authorize="hasAnyRole('ROLE_WORKER')">
+							<a th:href="@{/games/delete-second-player-from-game(playerId=${game.secondPlayerId}, gameId=${game.gameId})}"
+							   class="btn btn-dark ml-3"
+							   onclick="if (!(confirm('Czy na pewno chcesz usunąć drugiego zawodnika z meczu?'))) return false">
+								Usuń
 							</a>
 						</span>
 						<input type="number" min="0" th:field="*{secondPlayerScore}"
@@ -163,6 +177,8 @@
 						<label th:if="${secondPlayer != null}" class="ml-2 pt-3"
 							   th:text=" '(' + ${secondPlayer.name} + ' ' +${secondPlayer.surname} + ')' "></label>
 					</div>
+					<label class="mt-2">Dodaj mecz bez zawodników (spowoduje zapisanie meczu bez zawodników oraz punktów):</label>
+					<input type="checkbox" name="withoutPlayers" th:checked="*{withoutPlayers} ? false: true" />
 
 					<br>
 					<button type="submit" class="btn btn-outline-dark btn-md mt-5">Zapisz</button>

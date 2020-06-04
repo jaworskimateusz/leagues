@@ -84,7 +84,6 @@ public class PlayerController {
 	
 	@GetMapping("/search")
 	public String search(@RequestParam("pesel") String pesel,
-						 @RequestParam("playerId") int playerId,
 						 @RequestParam("gameId") int gameId,
 						 @RequestParam("whichOne") String whichOne,
 						 Model model) {
@@ -97,7 +96,7 @@ public class PlayerController {
 
 	@GetMapping("/choose-player")
 	public String choosePlayer(@RequestParam("gameId") int gameId, @RequestParam("whichOne") String whichOne, Model model) {
-		List<Player> players = playerMapper.findAll(); //TODO ON gameId
+		List<Player> players = playerMapper.findAll();
 		model.addAttribute("gameId", gameId);
 		model.addAttribute("players", players);
 		model.addAttribute("whichOne", whichOne);

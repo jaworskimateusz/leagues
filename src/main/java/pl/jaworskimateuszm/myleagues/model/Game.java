@@ -13,9 +13,7 @@ public class Game {
     private int roundId;
     private int firstPlayerScore;
     private int secondPlayerScore;
-    @Min(1)
     private int firstPlayerId;
-    @Min(2)
     private int secondPlayerId;
 
     @NotNull
@@ -26,7 +24,17 @@ public class Game {
     @Size(max = 45, message= "Maksymalna długość to 45 znaków.")
     private  String place;
 
+    private Boolean withoutPlayers = false;
+
     public Game() {
+    }
+
+    public Boolean getWithoutPlayers() {
+        return withoutPlayers;
+    }
+
+    public void setWithoutPlayers(Boolean withoutPlayers) {
+        this.withoutPlayers = withoutPlayers;
     }
 
     public int getFirstPlayerId() {

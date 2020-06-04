@@ -11,9 +11,11 @@ import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.mapper.RoundMapper;
 import pl.jaworskimateuszm.myleagues.mapper.SetMapper;
 import pl.jaworskimateuszm.myleagues.model.*;
+import pl.jaworskimateuszm.myleagues.utils.Parser;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/games")
@@ -40,7 +42,10 @@ public class GameController {
 	
 	@GetMapping("/add")
 	public String add(Model model) {
-		model.addAttribute("game", new Game());
+		int id = gameMapper.findMaxGameId();
+		Game game = new Game();
+		game.setGameId(id + 1);
+		model.addAttribute("game", game);
 		List<Round> rounds = roundMapper.findAll();
 		model.addAttribute("rounds",rounds);
 		return "/games/game-form";
@@ -63,45 +68,92 @@ public class GameController {
 	}
 	
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute("game") Game game, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+	public String save(@Valid @ModelAttribute("game") Game game, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/games/add";
 		}
-		if (gameMapper.findById(game.getGameId()) != null) {
-			gameMapper.update(game);
+		Game found = gameMapper.findById(game.getGameId());
+		if (game.getWithoutPlayers()) {
+			if (found != null)
+				gameMapper.updateWithoutPlayers(game);
+			else
+				gameMapper.insertWithoutPlayers(game);
 		} else {
-			gameMapper.insert(game);
+			if (game.getFirstPlayerId() == 0 || game.getSecondPlayerId() == 0) {
+				redirectAttributes.addFlashAttribute("error", true);
+				return "redirect:/games/add";
+			} else {
+				if (found != null)
+					gameMapper.update(game);
+				else
+					gameMapper.insert(game);
+			}
 		}
 		return "redirect:/games/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("gameId") int id) {
-//		gameMapper.deleteGamePlayerById(id);
 		gameMapper.deleteById(id);
 		return "redirect:/games/list";
 	}
 
 	@GetMapping("/search")
 	public String search(@RequestParam("place") String place,
-						 @RequestParam("dateFrom") String dateFrom,
-						 @RequestParam("dateTo") String dateTo,
+						 @RequestParam("dateFrom") String dateFromText,
+						 @RequestParam("dateTo") String dateToText,
 						 Model model) {
-		List<Game> games = gameMapper.findAllByPlace(place);
+		List<Game> games;
+		Date dateFrom = Parser.stringToDate(dateFromText);
+		Date dateTo = Parser.stringToDate(dateToText);
+		if (!place.isEmpty())
+			games = gameMapper.findAllByPlace(place);
+		else
+			games = gameMapper.findAll();
+		if (dateFrom != null)
+			games = games.stream().filter(game -> game.getGameDate().after(dateFrom)).collect(Collectors.toList());
+		if (dateTo != null)
+			games = games.stream().filter(game -> game.getGameDate().before(dateTo)).collect(Collectors.toList());
+
 		model.addAttribute("games", games);
 		return "/games/list-games";
 	}
 
-	@GetMapping("/add-to-game")
-	public String addToGame(@RequestParam("playerId") int playerId,
-							@RequestParam("gameId") int gameId,
-							@RequestParam("whichOne") String whichOne,
-							Model model) {
-//		Game game = gameMapper.findById(id);
-//		model.addAttribute("game", game);
-//		TODO db operations
-		return "/games/game-form";
+	@GetMapping("/add-first-player-to-game")
+	public String addFirstPlayerToGame(@RequestParam("playerId") int playerId,
+									   @RequestParam("gameId") int gameId,
+									   RedirectAttributes redirectAttributes) {
+		gameMapper.updateFirstPlayerId(playerId, gameId);
+		redirectAttributes.addAttribute("gameId", gameId);
+		return "redirect:/games/update";
+	}
+
+	@GetMapping("/add-second-player-to-game")
+	public String addSecondPlayerToGame(@RequestParam("playerId") int playerId,
+										@RequestParam("gameId") int gameId,
+										RedirectAttributes redirectAttributes) {
+		gameMapper.updateSecondPlayerId(playerId, gameId);
+		redirectAttributes.addAttribute("gameId", gameId);
+		return "redirect:/games/update";
+	}
+
+	@GetMapping("/delete-first-player-from-game")
+	public String deleteFirstPlayerFromGame(@RequestParam("playerId") int playerId,
+											@RequestParam("gameId") int gameId,
+											RedirectAttributes redirectAttributes) {
+		gameMapper.updateFirstPlayerId(0, gameId);
+		redirectAttributes.addAttribute("gameId", gameId);
+		return "redirect:/games/update";
+	}
+
+	@GetMapping("/delete-second-player-from-game")
+	public String deleteSecondPlayerFromGame(@RequestParam("playerId") int playerId,
+											 @RequestParam("gameId") int gameId,
+											 RedirectAttributes redirectAttributes) {
+		gameMapper.updateSecondPlayerId(0, gameId);
+		redirectAttributes.addAttribute("gameId", gameId);
+		return "redirect:/games/update";
 	}
 
 	@GetMapping("/add-set")
@@ -115,6 +167,7 @@ public class GameController {
 	@GetMapping("/update-set")
 	public String updateSet(@RequestParam("gameId") int gameId, @RequestParam("gameSetId") int gameSetId, Model model) {
 		GameSet gameSet = setMapper.findById(gameSetId);
+		gameSet.setGameId(gameId);
 		model.addAttribute("gameSet", gameSet);
 		model.addAttribute("gameId", gameId);
 		return "/games/set-form";
@@ -122,7 +175,6 @@ public class GameController {
 
 	@PostMapping("/save-set")
 	public String saveSet(@ModelAttribute("gameSet") GameSet gameSet, RedirectAttributes redirectAttributes) {
-
 		if (setMapper.findById(gameSet.getGameSetId()) != null) {
 			setMapper.update(gameSet);
 		} else {
@@ -133,7 +185,9 @@ public class GameController {
 	}
 
 	@GetMapping("/delete-set")
-	public String deleteSet(@RequestParam("gameId") int gameId, @RequestParam("gameSetId") int gameSetId, RedirectAttributes redirectAttributes) {
+	public String deleteSet(@RequestParam("gameId") int gameId,
+							@RequestParam("gameSetId") int gameSetId,
+							RedirectAttributes redirectAttributes) {
 		setMapper.deleteById(gameSetId);
 		redirectAttributes.addAttribute("gameId", gameId);
 		return "redirect:/games/update";
