@@ -76,7 +76,10 @@
 						Podane wartości są niepoprawne.
 					</div>
 					<input type="hidden" th:field="*{gameSetId}" />
-					<input type="hidden" name="gameId" th:field="${gameId}" />
+					<input type="hidden" name="gameId" th:field="*{gameId}" />
+					<label class="ml-2">Numer:</label>
+					<input type="number" min="0" th:field="*{number}"
+						   class="form-control mb-4 col-3 ml-2" >
 					<label class="ml-2">Wynik I zawodnika:</label>
 					<input type="number" min="0" th:field="*{firstPlayerScore}"
 						   class="form-control mb-4 col-2 ml-2" >

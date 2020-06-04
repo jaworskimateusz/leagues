@@ -20,13 +20,6 @@ public class Round {
     @Size(max = 100, message= "Maksymalna długość to 100 znaków.")
     private String discipline;
 
-    public Round(int roundId, int seasonId, int number, String discipline) {
-        this.roundId = roundId;
-        this.seasonId = seasonId;
-        this.number = number;
-        this.discipline = discipline;
-    }
-
     public Round() {
 
     }

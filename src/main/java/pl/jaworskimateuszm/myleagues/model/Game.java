@@ -13,9 +13,12 @@ public class Game {
     private int roundId;
     private int firstPlayerScore;
     private int secondPlayerScore;
+    @Min(1)
+    private int firstPlayerId;
+    @Min(2)
+    private int secondPlayerId;
 
     @NotNull
-//    @DateTimeFormat(pattern = "dd/MM/yyyy h:mm")
     @DateTimeFormat(pattern = "yyyy-MM-dd h:mm")
     private Date gameDate;
 
@@ -26,13 +29,20 @@ public class Game {
     public Game() {
     }
 
-    public Game(int gameId, int roundId, Date gameDate, String place, int firstPlayerScore, int secondPlayerScore) {
-        this.gameId = gameId;
-        this.roundId = roundId;
-        this.gameDate = gameDate;
-        this.place = place;
-        this.firstPlayerScore = firstPlayerScore;
-        this.secondPlayerScore = secondPlayerScore;
+    public int getFirstPlayerId() {
+        return firstPlayerId;
+    }
+
+    public void setFirstPlayerId(int firstPlayerId) {
+        this.firstPlayerId = firstPlayerId;
+    }
+
+    public int getSecondPlayerId() {
+        return secondPlayerId;
+    }
+
+    public void setSecondPlayerId(int secondPlayerId) {
+        this.secondPlayerId = secondPlayerId;
     }
 
     public int getGameId() {

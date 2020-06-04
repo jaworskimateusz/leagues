@@ -9,10 +9,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.jaworskimateuszm.myleagues.mapper.GameMapper;
 import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.mapper.RoundMapper;
+import pl.jaworskimateuszm.myleagues.mapper.SetMapper;
 import pl.jaworskimateuszm.myleagues.model.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -22,11 +22,13 @@ public class GameController {
 	private GameMapper gameMapper;
 	private PlayerMapper playerMapper;
 	private RoundMapper roundMapper;
+	private SetMapper setMapper;
 
-	public GameController(GameMapper gameMapper, PlayerMapper playerMapper, RoundMapper roundMapper) {
+	public GameController(GameMapper gameMapper, PlayerMapper playerMapper, RoundMapper roundMapper, SetMapper setMapper) {
 		this.gameMapper = gameMapper;
 		this.playerMapper = playerMapper;
 		this.roundMapper = roundMapper;
+		this.setMapper = setMapper;
 	}
 
 	@GetMapping("/list")
@@ -48,13 +50,9 @@ public class GameController {
 	public String update(@RequestParam("gameId") int id, Model model) {
 		Game game = gameMapper.findById(id);
 		List<Round> rounds = roundMapper.findAll();
-//		Player firstPlayer = playerMapper.findById(game.firstPlayerId);
-		ArrayList<GameSet> gameSets = new ArrayList<>();
-		gameSets.add(new GameSet(10, 1, 15, 8));
-//		TODO get sets for game from db
-		Player firstPlayer = new Player(3, "Jakub", "Zieliński", "92020212321");
-		Player secondPlayer = new Player(4, "Mateusz", "Kowalski", "91020212321");
-
+		List<GameSet> gameSets = setMapper.findAllByGameId(id);
+		Player firstPlayer = playerMapper.findById(game.getFirstPlayerId());
+		Player secondPlayer = playerMapper.findById(game.getSecondPlayerId());
 		model.addAttribute("game", game);
 		model.addAttribute("firstPlayer", firstPlayer);
 		model.addAttribute("secondPlayer", secondPlayer);
@@ -108,33 +106,35 @@ public class GameController {
 
 	@GetMapping("/add-set")
 	public String add(@RequestParam("gameId") int gameId, Model model) {
-		model.addAttribute("gameSet", new GameSet());
-		model.addAttribute("gameId", gameId);
+		GameSet gameSet = new GameSet();
+		gameSet.setGameId(gameId);
+		model.addAttribute("gameSet", gameSet);
 		return "/games/set-form";
 	}
 
 	@GetMapping("/update-set")
 	public String updateSet(@RequestParam("gameId") int gameId, @RequestParam("gameSetId") int gameSetId, Model model) {
-		ArrayList<GameSet> gameSets = new ArrayList<>();
-		model.addAttribute("gameSet", new GameSet(10, 1, 15, 8));
+		GameSet gameSet = setMapper.findById(gameSetId);
+		model.addAttribute("gameSet", gameSet);
 		model.addAttribute("gameId", gameId);
 		return "/games/set-form";
 	}
 
 	@PostMapping("/save-set")
-	public String saveSet(@RequestParam("gameId") int gameId,
-						  @ModelAttribute("gameSet") GameSet gameSet,
-						  Model model,
-						  RedirectAttributes redirectAttributes) {
+	public String saveSet(@ModelAttribute("gameSet") GameSet gameSet, RedirectAttributes redirectAttributes) {
 
-//		gameMapper.saveSet(gameSet);
-		redirectAttributes.addAttribute("gameId", gameId);
+		if (setMapper.findById(gameSet.getGameSetId()) != null) {
+			setMapper.update(gameSet);
+		} else {
+			setMapper.insert(gameSet);
+		}
+		redirectAttributes.addAttribute("gameId", gameSet.getGameId());
 		return "redirect:/games/update";
 	}
 
 	@GetMapping("/delete-set")
 	public String deleteSet(@RequestParam("gameId") int gameId, @RequestParam("gameSetId") int gameSetId, RedirectAttributes redirectAttributes) {
-//		gameMapper.deleteSetById(id);
+		setMapper.deleteById(gameSetId);
 		redirectAttributes.addAttribute("gameId", gameId);
 		return "redirect:/games/update";
 	}

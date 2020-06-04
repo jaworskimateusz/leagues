@@ -1,9 +1,7 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.jaworskimateuszm.myleagues.mapper.LeagueMapper;
 import pl.jaworskimateuszm.myleagues.mapper.SeasonMapper;
-import pl.jaworskimateuszm.myleagues.model.Fee;
 import pl.jaworskimateuszm.myleagues.model.League;
 import pl.jaworskimateuszm.myleagues.model.Season;
 import pl.jaworskimateuszm.myleagues.utils.Parser;

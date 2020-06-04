@@ -19,14 +19,6 @@ public class League {
     public League() {
     }
 
-    public League(int leagueId, int objectId, int disciplineId, String level,  String description) {
-        this.leagueId = leagueId;
-        this.objectId = objectId;
-        this.disciplineId = disciplineId;
-        this.level = level;
-        this.description = description;
-    }
-
     public int getLeagueId() {
         return leagueId;
     }

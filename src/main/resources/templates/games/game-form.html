@@ -76,6 +76,44 @@
 					<div th:if="${error == true}" class="help-block text-danger col-xs-offset-1 col-xs-10 mb-2">
 						Podane wartości są niepoprawne.
 					</div>
+					<div th:if="${gameSets != null}" class="col-6 small">
+						<h6>Sety</h6>
+						<a th:href="@{/games/add-set(gameId=${game.gameId})}"
+						   class="btn btn-outline-dark btn-sm  mt-2 mb-4 mr-5">
+							Dodaj Set
+						</a>
+						<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>Numer setu</th>
+								<th>Wynik I zawodnika</th>
+								<th>Wynik II zawodnika</th>
+								<th>Akcja</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:each="gameSet : ${gameSets}">
+								<td th:text="${gameSet.number}" />
+								<td th:text="${gameSet.firstPlayerScore}" />
+								<td th:text="${gameSet.secondPlayerScore}" />
+								<td class="form-inline">
+									<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+										<a th:href="@{/games/update-set(gameId=*{gameId}, gameSetId=${gameSet.gameSetId})}"
+										   class="btn btn-outline-secondary btn-sm">
+											Edytuj
+										</a>
+									</div>
+									<div sec:authorize="hasRole('ROLE_WORKER')">
+										<a th:href="@{/games/delete-set(gameId=${game.gameId}, gameSetId=${gameSet.gameSetId})}"
+										   class="btn btn-dark btn-sm ml-1"
+										   onclick="if (!(confirm('Czy na pewno chcesz usunąć set?'))) return false">
+											Usuń
+										</a>
+									</div>
+							</tr>
+							</tbody>
+						</table>
+					</div>
 					<input type="hidden" th:field="*{gameId}" />
 <!--					<input type="hidden" th:field="*{firstPlayerId}" />-->
 <!--					<input type="hidden" th:field="*{secondPlayerId}" />-->
@@ -126,44 +164,6 @@
 							   th:text=" '(' + ${secondPlayer.name} + ' ' +${secondPlayer.surname} + ')' "></label>
 					</div>
 
-					<div th:if="${gameSets != null}" class="col-6 small">
-						<h6>Sety</h6>
-						<table class="table table-striped">
-							<thead>
-							<tr>
-								<th>Numer setu</th>
-								<th>Wynik I zawodnika</th>
-								<th>Wynik II zawodnika</th>
-								<th>Akcja</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr th:each="gameSet : ${gameSets}">
-								<td th:text="${gameSet.setNumber}" />
-								<td th:text="${gameSet.firstPlayerScore}" />
-								<td th:text="${gameSet.secondPlayerScore}" />
-								<td class="form-inline">
-									<div sec:authorize="hasAnyRole('ROLE_WORKER')">
-										<a th:href="@{/games/update-set(gameId=*{gameId}, gameSetId=${gameSet.gameSetId})}"
-										   class="btn btn-outline-secondary btn-sm">
-											Edytuj
-										</a>
-									</div>
-									<div sec:authorize="hasRole('ROLE_WORKER')">
-										<a th:href="@{/games/delete-set(gameId=${game.gameId}, gameSetId=${gameSet.gameSetId})}"
-										   class="btn btn-dark btn-sm ml-1"
-										   onclick="if (!(confirm('Czy na pewno chcesz usunąć set?'))) return false">
-											Usuń
-										</a>
-									</div>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-					<a th:href="@{/games/add-set(gameId=${game.gameId})}"
-					   class="btn btn-outline-dark btn-sm mr-5">
-						Dodaj Set
-					</a>
 					<br>
 					<button type="submit" class="btn btn-outline-dark btn-md mt-5">Zapisz</button>
 				</form>

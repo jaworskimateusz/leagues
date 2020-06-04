@@ -2,18 +2,12 @@ package pl.jaworskimateuszm.myleagues.model;
 
 public class GameSet {
     private int gameSetId;
-    private int setNumber;
+    private int number;
     private int firstPlayerScore;
     private int secondPlayerScore;
+    private int gameId;
 
     public GameSet() {
-    }
-
-    public GameSet(int gameSetId, int setNumber, int firstPlayerScore, int secondPlayerScore) {
-        this.gameSetId = gameSetId;
-        this.setNumber = setNumber;
-        this.firstPlayerScore = firstPlayerScore;
-        this.secondPlayerScore = secondPlayerScore;
     }
 
     public int getGameSetId() {
@@ -24,12 +18,12 @@ public class GameSet {
         this.gameSetId = gameSetId;
     }
 
-    public int getSetNumber() {
-        return setNumber;
+    public int getNumber() {
+        return number;
     }
 
-    public void setSetNumber(int setNumber) {
-        this.setNumber = setNumber;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public int getFirstPlayerScore() {
@@ -46,5 +40,13 @@ public class GameSet {
 
     public void setSecondPlayerScore(int secondPlayerScore) {
         this.secondPlayerScore = secondPlayerScore;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(int gameId) {
+        this.gameId = gameId;
     }
 }

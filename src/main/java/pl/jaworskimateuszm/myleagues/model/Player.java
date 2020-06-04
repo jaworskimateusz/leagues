@@ -20,15 +20,7 @@ public class Player {
     @NotEmpty
     private int[] leagueIds;
 
-    public Player(int playerId, String name, String surname,  String pesel) {
-        this.playerId = playerId;
-        this.name = name;
-        this.surname = surname;
-        this.pesel = pesel;
-    }
-
     public Player() {
-
     }
 
     @Transient
