@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(securityDataSource());
+        auth.jdbcAuthentication().dataSource(securityDataSource()).passwordEncoder(getPasswordEncoder());
         auth.userDetailsService(userDetailsService);
     }
 
@@ -47,10 +47,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/*").hasAnyRole("WORKER","ACCOUNTANT", "ADMIN", "ORGANISER")
                 .antMatchers("/players/**").hasAnyRole("WORKER", "ACCOUNTANT")
-                .antMatchers("/places/**").hasAnyRole("WORKER", "ACCOUNTANT")
+                .antMatchers("/seasons/**").hasAnyRole("WORKER", "ACCOUNTANT")
+                .antMatchers("/places/**").hasRole( "ACCOUNTANT")
                 .antMatchers("/rounds/**").hasRole("WORKER")
                 .antMatchers("/games/**").hasRole("WORKER")
-                .antMatchers("/seasons/**").hasAnyRole("WORKER", "ACCOUNTANT")
                 .antMatchers("/resources/**").permitAll()
                 .and()
                 .formLogin()

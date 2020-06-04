@@ -27,9 +27,7 @@ public class UserService implements UserDetailsService {
         org.springframework.security.core.userdetails.User.UserBuilder builder = null;
         if (user != null) {
             builder = org.springframework.security.core.userdetails.User.withUsername(username);
-            builder.password(bCryptPasswordEncoder.encode(user.getPassword())); //TODO
-            builder.roles("WORKER"); // in this project user has one role
-//            builder.roles("ACCOUNTANT"); // in this project user has one role
+            builder.password(user.getPassword());
         } else {
             throw new UsernameNotFoundException("User not found.");
         }

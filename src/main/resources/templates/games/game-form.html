@@ -51,7 +51,7 @@
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
 					[
-						<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+						<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość </span>
 						<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
 					]
 				</a>

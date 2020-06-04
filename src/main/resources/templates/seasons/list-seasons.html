@@ -51,7 +51,7 @@
 					</svg>
 					Zalogowany użytkownik: <b th:inline="text"> [[${#httpServletRequest.remoteUser}]] </b>
 					[
-					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość |</span>
+					<span sec:authorize="hasRole('ROLE_ACCOUNTANT')" class="white-text">księgowość </span>
 					<span sec:authorize="hasRole('ROLE_WORKER')" class="white-text">pracownik</span>
 					]
 				</a>
@@ -70,7 +70,7 @@
 			<div class="col-md-12">
 				<h3 class="mt-5 pt-4">Lista Sezonów</h3>
 				<hr>
-				<form th:action="@{/seasons/search}" class="form-inline mb-3">
+				<form sec:authorize="hasAnyRole('ROLE_WORKER')" th:action="@{/seasons/search}" class="form-inline mb-3">
 					<a th:if="${confirm != 1}" th:href="@{/seasons/add}"
 					   class="btn btn-outline-dark mr-5">
 						Dodaj Sezon
