@@ -79,6 +79,7 @@
 					<h5 class="mb-4" th:text="${place.name}" sec:authorize="hasRole('ROLE_ACCOUNTANT')"></h5>
 					<input type="text" th:field="*{name}" maxlength="45" sec:authorize="hasRole('ROLE_ORGANISER')"
 						   class="form-control mb-4 col-4" placeholder="Nazwa *">
+					<input type="hidden" th:field="*{name}" class="form-control mb-4 col-4">
 					<input type="number" min="0" th:field="*{numberOfHours}"
 						   class="form-control mb-4 col-4" placeholder="Liczba godzin *">
 					<input type="number" th:field="*{cost}" min="0" step="any"

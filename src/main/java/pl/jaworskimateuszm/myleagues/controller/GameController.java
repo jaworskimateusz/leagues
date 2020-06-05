@@ -42,12 +42,13 @@ public class GameController {
 	
 	@GetMapping("/add")
 	public String add(Model model) {
-		int id = gameMapper.findMaxGameId();
-		Game game = new Game();
-		game.setGameId(id + 1);
-		model.addAttribute("game", game);
 		List<Round> rounds = roundMapper.findAll();
+		gameMapper.insert(new Game(rounds.stream().findFirst().get().getRoundId(),0,0,0,0, new Date(), "-"));
+		int id = gameMapper.findMaxGameId();
+		Game game = gameMapper.findById(id);
+		model.addAttribute("game", game);
 		model.addAttribute("rounds",rounds);
+		model.addAttribute("readWrite", true);
 		return "/games/game-form";
 	}
 
@@ -64,6 +65,7 @@ public class GameController {
 		model.addAttribute("secondPlayer", secondPlayer);
 		model.addAttribute("rounds", rounds);
 		model.addAttribute("gameSets", gameSets);
+		model.addAttribute("readWrite", true);
 		return "/games/game-form";
 	}
 	
@@ -74,22 +76,11 @@ public class GameController {
 			return "redirect:/games/add";
 		}
 		Game found = gameMapper.findById(game.getGameId());
-		if (game.getWithoutPlayers()) {
-			if (found != null)
-				gameMapper.updateWithoutPlayers(game);
-			else
-				gameMapper.insertWithoutPlayers(game);
-		} else {
-			if (game.getFirstPlayerId() == 0 || game.getSecondPlayerId() == 0) {
-				redirectAttributes.addFlashAttribute("error", true);
-				return "redirect:/games/add";
-			} else {
-				if (found != null)
-					gameMapper.update(game);
-				else
-					gameMapper.insert(game);
-			}
-		}
+		if (found != null)
+			gameMapper.update(game);
+		else
+			gameMapper.insert(game);
+
 		return "redirect:/games/list";
 	}
 	
@@ -192,5 +183,23 @@ public class GameController {
 		redirectAttributes.addAttribute("gameId", gameId);
 		return "redirect:/games/update";
 	}
+
+	@GetMapping("/detail")
+	public String showGameDetail(@RequestParam("gameId") int id, Model model) {
+		Game game = gameMapper.findById(id);
+		Round rounds = roundMapper.findById(game.getRoundId());
+		List<GameSet> gameSets = setMapper.findAllByGameId(id);
+		Player firstPlayer = playerMapper.findById(game.getFirstPlayerId());
+		Player secondPlayer = playerMapper.findById(game.getSecondPlayerId());
+		model.addAttribute("game", game);
+		model.addAttribute("firstPlayer", firstPlayer);
+		model.addAttribute("secondPlayer", secondPlayer);
+		model.addAttribute("secondPlayer", secondPlayer);
+		model.addAttribute("rounds", rounds);
+		model.addAttribute("gameSets", gameSets);
+		model.addAttribute("readWrite", false);
+		return "/games/game-form";
+	}
+
 
 }

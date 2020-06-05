@@ -11,6 +11,7 @@ import pl.jaworskimateuszm.myleagues.mapper.LeagueMapper;
 import pl.jaworskimateuszm.myleagues.mapper.PlayerMapper;
 import pl.jaworskimateuszm.myleagues.model.League;
 import pl.jaworskimateuszm.myleagues.model.Player;
+import pl.jaworskimateuszm.myleagues.model.PlayerDetail;
 
 import javax.validation.Valid;
 
@@ -53,8 +54,9 @@ public class PlayerController {
 	@GetMapping("/detail")
 	public String detail(@RequestParam("playerId") int id, Model model) {
 		Player player = playerMapper.findById(id);
+		List<PlayerDetail> details = playerMapper.findAllDetailById(id);
 		model.addAttribute("player", player);
-//		TODO add huge query for player details
+		model.addAttribute("details", details);
 		return "/players/player-detail";
 	}
 	

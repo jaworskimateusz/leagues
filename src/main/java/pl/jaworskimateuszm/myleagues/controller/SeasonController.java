@@ -109,10 +109,8 @@ public class SeasonController {
 	public String confirmPayment(@RequestParam("seasonId") int seasonId,
 								 @RequestParam("playerId") int playerId,
 								 Model model) {
-//		List<Season> seasons = seasonMapper.findAll();
-//		TODO confirm payment where seasonId is seasonId
-//		TODO seasons for playerId
-		ArrayList<Season> seasons = new ArrayList<>();
+		List<Season> seasons = seasonMapper.findAllByPlayerId(playerId);
+
 		model.addAttribute("seasons", seasons);
 		model.addAttribute("playerId", playerId);
 		model.addAttribute("confirm", 1);

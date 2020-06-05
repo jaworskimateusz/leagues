@@ -76,7 +76,6 @@
 				<table class="table table-bordered table-striped">
 					<thead class="thead-dark">
 					<tr>
-						<th>Dyscyplina</th>
 						<th>Nazwa ligi</th>
 						<th>Sezon</th>
 						<th>Numer kolejki</th>
@@ -87,19 +86,21 @@
 					</tr>
 					</thead>
 					<tbody>
-<!--						<tr th:each="view : ${joinView}">-->
-<!--							<td th:text="${player.name}" />-->
-<!--							<td th:text="${player.surname}" />-->
-<!--							<td th:text="${player.pesel}" />-->
-<!--							<td>-->
-<!--								<div sec:authorize="hasAnyRole('ROLE_WORKER')">-->
-<!--									<a th:href="@{/games/detail(gameId=${game.gameId})}"-->
-<!--									   class="btn btn-outline-secondary btn-sm">-->
-<!--										Szczegóły meczu-->
-<!--									</a>-->
-<!--								</div>-->
-<!--							</td>-->
-<!--						</tr>-->
+						<tr th:each="detail : ${details}">
+							<td th:text="${detail.leagueDescription}" />
+							<td th:text="${detail.seasonDescription}" />
+							<td th:text="${detail.roundNumber}" />
+							<td th:text="${{detail.gameDate}}" />
+							<td th:text="${detail.place}" />
+							<td>
+								<div sec:authorize="hasAnyRole('ROLE_WORKER')">
+									<a th:href="@{/games/detail(gameId=${detail.gameId})}"
+									   class="btn btn-outline-secondary btn-sm">
+										Szczegóły meczu
+									</a>
+								</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 

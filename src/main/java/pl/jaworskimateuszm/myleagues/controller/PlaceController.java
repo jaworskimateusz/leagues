@@ -1,5 +1,6 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,7 +11,6 @@ import pl.jaworskimateuszm.myleagues.model.Place;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 
 @Controller
@@ -25,12 +25,7 @@ public class PlaceController {
 
 	@GetMapping("/list")
 	public String listPlaces(Model model) {
-		//List<Place> places = placeMapper.findAll();
-		ArrayList<Place> places = new ArrayList<>();
-		places.add(new Place(1, new BigDecimal("1000.05"),30,"Spodek Katowice",true));
-		places.add(new Place(2, new BigDecimal("2000.05"),35,"Spodek Warszawa",true));
-		places.add(new Place(4, new BigDecimal("3000.05"),32,"Spodek Piaseczno",false));
-		model.addAttribute("places", places);
+		List<Place> places = placeMapper.findAll();
 		model.addAttribute("places", places);
 		return "/places/list-places";
 	}
@@ -38,15 +33,13 @@ public class PlaceController {
 	@GetMapping("/add")
 	public String add(Model model) {
 		model.addAttribute("place", new Place());
-//		List<Place> places = placeMapper.findAll();
 		return "/places/place-form";
 	}
 
 	@GetMapping("/update")
 	public String update(@RequestParam("placeId") int id, Model model) {
-//		Place place = placeMapper.findById(id);
-//		model.addAttribute("place", place);
-		model.addAttribute("place", new Place(1, new BigDecimal("1000.05"),30,"Spodek Katowice",true));
+		Place place = placeMapper.findById(id);
+		model.addAttribute("place", place);
 		return "/places/place-form";
 	}
 	
@@ -56,22 +49,29 @@ public class PlaceController {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/places/add";
 		}
+		if (place.getConfirmedFlag())
+			place.setConfirmed(1);
+		else
+			place.setConfirmed(0);
+		Place found = placeMapper.findById(place.getPlaceId());
+		if (found != null)
+			placeMapper.update(place);
+		else
+			placeMapper.insert(place);
 
-//		placeMapper.save(place);
 		return "redirect:/places/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("placeId") int id) {
-//		placeMapper.deleteById(id);
+		placeMapper.deleteById(id);
 		return "redirect:/places/list";
 	}
 
 	@GetMapping("/search")
 	public String search(@RequestParam("name") String name, Model model, RedirectAttributes redirectAttributes) {
-//		List<Place> places = placeMapper.searchBy(name);
-//		model.addAttribute("places", places);
-//		ArrayList<Place> places = new ArrayList<Place>();
+		List<Place> places = placeMapper.findAllByName(name);
+		model.addAttribute("places", places);
 		return "/places/list-places";
 	}
 }

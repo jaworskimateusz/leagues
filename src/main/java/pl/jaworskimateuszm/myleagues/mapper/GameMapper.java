@@ -58,13 +58,12 @@ public interface GameMapper {
     @Delete("DELETE FROM zawodnicy_mecze WHERE id_meczu = #{id}")
     int deleteGamePlayerById(int id);
 
-    @Insert("INSERT INTO mecze (id_meczu, id_kolejki, termin, miejsce, wynik_pierwszego, wynik_drugiego, id_pierwszego_zawodnika, id_drugiego_zawodnika) " +
-            " VALUES (#{gameId}, #{roundId}, #{gameDate}, #{place}, #{firstPlayerScore}, #{secondPlayerScore}, #{#{firstPlayerId}}, #{secondPlayerId})")
+    @Insert("INSERT INTO mecze (id_kolejki, termin, miejsce, wynik_pierwszego, wynik_drugiego) " +
+            " VALUES (#{roundId}, #{gameDate}, #{place}, #{firstPlayerScore}, #{secondPlayerScore})")
     int insert(Game game);
 
     @Update("UPDATE mecze SET id_kolejki=#{roundId}, termin=#{gameDate}, " +
-            "miejsce=#{place}, wynik_pierwszego=#{firstPlayerScore} , wynik_drugiego=#{secondPlayerScore},  " +
-            "id_pierwszego_zawodnika=#{firstPlayerId} , id_drugiego_zawodnika=#{secondPlayerId} " +
+            "miejsce=#{place}, wynik_pierwszego=#{firstPlayerScore} , wynik_drugiego=#{secondPlayerScore} " +
             "WHERE id_meczu=#{gameId}")
     int update(Game game);
 
@@ -84,6 +83,6 @@ public interface GameMapper {
 
 
     @Select("SELECT MAX(id_meczu) FROM mecze")
-    int findMaxGameId();
+    Integer findMaxGameId();
 
 }

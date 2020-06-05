@@ -2,6 +2,7 @@ package pl.jaworskimateuszm.myleagues.mapper;
 
 import org.apache.ibatis.annotations.*;
 import pl.jaworskimateuszm.myleagues.model.Player;
+import pl.jaworskimateuszm.myleagues.model.PlayerDetail;
 
 import java.util.List;
 
@@ -57,5 +58,24 @@ public interface PlayerMapper {
             @Result(property = "pesel", column = "pesel")
     })
     List<Player> searchBy(String pesel);
+
+    @Select(" SELECT ligi.opis as opis_ligi, sezony.opis as opis_sezonu, kolejki.numer, " +
+            "    mecze.id_meczu, mecze.termin, mecze.miejsce\n" +
+            "    FROM zawodnicy\n" +
+            "    JOIN zawodnicy_ligi USING (id_zawodnika)\n" +
+            "    JOIN ligi USING (id_ligi)\n" +
+            "    JOIN sezony USING (id_ligi)\n" +
+            "    JOIN kolejki USING (id_sezonu)\n" +
+            "    JOIN mecze USING (id_kolejki)\n" +
+            " WHERE zawodnicy.id_zawodnika = #{playerId}")
+    @Results({
+            @Result(property = "leagueDescription", column = "opis_ligi"),
+            @Result(property = "seasonDescription", column = "opis_sezonu"),
+            @Result(property = "roundNumber", column = "numer"),
+            @Result(property = "gameId", column = "id_meczu"),
+            @Result(property = "gameDate", column = "termin"),
+            @Result(property = "place", column = "miejsce")
+    })
+    List<PlayerDetail> findAllDetailById(int playerId);
 
 }

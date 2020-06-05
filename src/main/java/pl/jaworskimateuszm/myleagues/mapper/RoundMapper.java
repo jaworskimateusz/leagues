@@ -42,11 +42,11 @@ public interface RoundMapper {
     int deleteRoundFeeById(int id);
 
     @Insert("INSERT INTO kolejki (id_sezonu, numer, dyscyplina) " +
-            " VALUES (#{seasonId}, #{seasonId}, #{discipline})")
+            " VALUES (#{seasonId}, #{number}, #{discipline})")
     @Options(useGeneratedKeys = true, keyProperty = "roundId")
     int insert(Round round);
 
-    @Update("UPDATE kolejki SET id_kolejki=#{roundId}, numer=#{roundId}, opis=#{discipline} WHERE id_kolejki=#{roundId}")
+    @Update("UPDATE kolejki SET id_kolejki=#{roundId}, numer=#{number}, dyscyplina=#{discipline} WHERE id_kolejki=#{roundId}")
     int update(Round round);
 
     @Update("UPDATE kolejki_wpisowe SET id_kolejki=#{roundId}, id_wpisowego=#{feeId} " +

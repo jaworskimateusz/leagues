@@ -125,13 +125,11 @@
 								</div>
 								<div th:if="${whichOne != null}"  sec:authorize="hasRole('ROLE_WORKER')">
 									<a th:if="${whichOne.equals('first')}" th:href="@{/games/add-first-player-to-game(playerId=${player.playerId}, gameId=${gameId})}"
-									   class="btn btn-dark btn-sm ml-1"
-									   onclick="if (!(confirm('Czy na pewno chcesz dodać tego zawodnika?'))) return false">
+									   class="btn btn-dark btn-sm ml-1">
 										Wybierz
 									</a>
 									<a th:if="${whichOne.equals('second')}" th:href="@{/games/add-second-player-to-game(playerId=${player.playerId}, gameId=${gameId})}"
-									   class="btn btn-dark btn-sm ml-1"
-									   onclick="if (!(confirm('Czy na pewno chcesz dodać tego zawodnika?'))) return false">
+									   class="btn btn-dark btn-sm ml-1">
 										Wybierz
 									</a>
 								</div>

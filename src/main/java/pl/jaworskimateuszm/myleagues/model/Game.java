@@ -29,6 +29,16 @@ public class Game {
     public Game() {
     }
 
+    public Game(int roundId, int firstPlayerScore, int secondPlayerScore, int firstPlayerId, int secondPlayerId, Date gameDate, String place) {
+        this.roundId = roundId;
+        this.firstPlayerScore = firstPlayerScore;
+        this.secondPlayerScore = secondPlayerScore;
+        this.firstPlayerId = firstPlayerId;
+        this.secondPlayerId = secondPlayerId;
+        this.gameDate = gameDate;
+        this.place = place;
+    }
+
     public Boolean getWithoutPlayers() {
         return withoutPlayers;
     }
