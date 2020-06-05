@@ -13,15 +13,9 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(User user);
 
-//    @Results({
-//            @Result(property = "login", column = "login"),
-//            @Result(property = "password", column = "haslo"),
-//            @Result(property = "name", column = "imie"),
-//            @Result(property = "surname", column = "nazwisko")
-//    })
     @Select("SELECT username, password, enabled FROM users WHERE username = #{username}")
     User findByUsername(String username);
 
-    @Select("SELECT * FROM users")
+    @Select("SELECT username, password, enabled FROM users")
     List<User> findAll();
 }

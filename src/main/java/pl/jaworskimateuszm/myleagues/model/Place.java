@@ -24,14 +24,6 @@ public class Place {
 
     }
 
-    public Place(int placeId, BigDecimal cost, int numberOfHours, String name, Boolean confirmedFlag) {
-        this.placeId = placeId;
-        this.cost = cost;
-        this.numberOfHours = numberOfHours;
-        this.name = name;
-        this.confirmedFlag = confirmedFlag;
-    }
-
     public int getConfirmed() {
         return confirmed;
     }

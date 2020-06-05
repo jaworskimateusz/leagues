@@ -22,14 +22,18 @@ public class Season {
     @Size(max = 100, message= "Maksymalna długość to 100 znaków.")
     private String description;
 
+    private int feeId;
+    private int confirmed;
+
     public Season() {
     }
 
-    public Season(int seasonId, int leagueId, int number, String description) {
-        this.seasonId = seasonId;
-        this.leagueId = leagueId;
-        this.number = number;
-        this.description = description;
+    public int getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(int confirmed) {
+        this.confirmed = confirmed;
     }
 
     public int getSeasonId() {
@@ -62,5 +66,13 @@ public class Season {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getFeeId() {
+        return feeId;
+    }
+
+    public void setFeeId(int feeId) {
+        this.feeId = feeId;
     }
 }

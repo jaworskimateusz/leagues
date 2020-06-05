@@ -23,7 +23,6 @@ public class Player {
     public Player() {
     }
 
-    @Transient
     public int[] getLeagueIds() {
         return leagueIds;
     }

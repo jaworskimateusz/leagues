@@ -27,16 +27,6 @@ public interface LeagueMapper {
     })
     League findById(int id);
 
-    @Select("SELECT id_ligi, id_obiektu, id_dyscypliny, poziom, opis FROM ligi")
-    @Results({
-            @Result(property = "leagueId", column = "id_ligi"),
-            @Result(property = "objectId", column = "id_obiektu"),
-            @Result(property = "disciplineId", column = "id_dyscypliny"),
-            @Result(property = "level", column = "poziom"),
-            @Result(property = "description", column = "opis")
-    })
-    List<League> findAllByPlayerId();
-
     @Delete("DELETE FROM ligi WHERE id_ligi = #{id}")
     int deleteById(int id);
 

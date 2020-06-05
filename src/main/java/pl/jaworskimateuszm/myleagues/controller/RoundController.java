@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.jaworskimateuszm.myleagues.mapper.GameMapper;
 import pl.jaworskimateuszm.myleagues.mapper.RoundMapper;
 import pl.jaworskimateuszm.myleagues.mapper.SeasonMapper;
 import pl.jaworskimateuszm.myleagues.model.Round;
@@ -53,7 +52,7 @@ public class RoundController {
 	}
 	
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute("round") Round round, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+	public String save(@Valid @ModelAttribute("round") Round round, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/rounds/add";
@@ -63,13 +62,15 @@ public class RoundController {
 		} else {
 			roundMapper.insert(round);
 		}
-//		here payment should be automatically created for specific round TODO to consider
+		roundMapper.insertFee(new Date()); //type 0 means for rounds
+		int feeId = roundMapper.findLastFeeId();
+		roundMapper.insertRoundFee(round.getRoundId(), feeId);
 		return "redirect:/rounds/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("roundId") int id) {
-//		roundMapper.deleteRoundFeeById(id);
+		roundMapper.deleteRoundFeeById(id);
 		roundMapper.deleteById(id);
 		return "redirect:/rounds/list";
 	}
@@ -95,36 +96,39 @@ public class RoundController {
 
 	@GetMapping("/manage-rounds")
 	public String manageRoundPayment(@RequestParam("playerId") int id, Model model) {
-//		Player player = playerMapper.findById(id);
-		List<Round> rounds = roundMapper.findAll();
+		List<Round> rounds = roundMapper.findAllByPlayerId(id);
 		model.addAttribute("rounds", rounds);
-		model.addAttribute("confirm", 1);
 		model.addAttribute("playerId", id);
+		model.addAttribute("confirm", 1);
 		return "/rounds/list-rounds";
 	}
 
 	@GetMapping("/confirm-payment")
 	public String confirmPayment(@RequestParam("roundId") int roundId,
 								 @RequestParam("playerId") int playerId,
-								 Model model) {
-		List<Round> rounds = roundMapper.findAll();
-//		TODO confirm payment where roundId is roundId
-//		TODO get rounds for playerId
-		model.addAttribute("rounds", rounds);
-		model.addAttribute("playerId", playerId);
-		model.addAttribute("confirm", 1);
-		return "/rounds/list-rounds";
+								 RedirectAttributes redirectAttributes) {
+		List<Round> rounds = roundMapper.findAllByPlayerId(playerId);
+		for (Round round : rounds) {
+			if (round.getRoundId() == roundId) {
+				roundMapper.confirmRoundFee(round.getFeeId());
+			}
+		}
+		redirectAttributes.addAttribute("playerId", playerId);
+		return "redirect:/rounds/manage-rounds";
 	}
 
 	@GetMapping("/cancel-payment")
 	public String cancelPayment(@RequestParam("roundId") int roundId,
 								@RequestParam("playerId") int playerId,
-								Model model) {
-		List<Round> rounds = roundMapper.findAll();
-		model.addAttribute("rounds", rounds);
-		model.addAttribute("playerId", playerId);
-		model.addAttribute("confirm", 1);
-		return "/rounds/list-rounds";
+								RedirectAttributes redirectAttributes) {
+		List<Round> rounds = roundMapper.findAllByPlayerId(playerId);
+		for (Round round : rounds) {
+			if (round.getRoundId() == roundId) {
+				roundMapper.cancelRoundFee(round.getFeeId());
+			}
+		}
+		redirectAttributes.addAttribute("playerId", playerId);
+		return "redirect:/rounds/manage-rounds";
 	}
 
 }

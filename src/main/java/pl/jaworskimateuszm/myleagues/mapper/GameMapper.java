@@ -67,14 +67,6 @@ public interface GameMapper {
             "WHERE id_meczu=#{gameId}")
     int update(Game game);
 
-    @Insert("INSERT INTO mecze (id_meczu, id_kolejki, termin, miejsce) " +
-            " VALUES (#{gameId}, #{roundId}, #{gameDate}, #{place})")
-    int insertWithoutPlayers(Game game);
-
-    @Update("UPDATE mecze SET id_kolejki=#{roundId}, termin=#{gameDate}, " +
-            "miejsce=#{place} WHERE id_meczu=#{gameId}")
-    int updateWithoutPlayers(Game game);
-
     @Update("UPDATE mecze SET id_pierwszego_zawodnika=#{firstPlayerId} WHERE id_meczu=#{gameId}")
     int updateFirstPlayerId(int firstPlayerId, int gameId);
 

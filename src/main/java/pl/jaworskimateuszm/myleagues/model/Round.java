@@ -20,6 +20,9 @@ public class Round {
     @Size(max = 100, message= "Maksymalna długość to 100 znaków.")
     private String discipline;
 
+    private int feeId;
+    private int confirmed;
+
     public Round() {
 
     }
@@ -54,5 +57,21 @@ public class Round {
 
     public void setDiscipline(String discipline) {
         this.discipline = discipline;
+    }
+
+    public int getFeeId() {
+        return feeId;
+    }
+
+    public void setFeeId(int feeId) {
+        this.feeId = feeId;
+    }
+
+    public int getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(int confirmed) {
+        this.confirmed = confirmed;
     }
 }

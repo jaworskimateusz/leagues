@@ -27,6 +27,7 @@ public class Game {
     private Boolean withoutPlayers = false;
 
     public Game() {
+
     }
 
     public Game(int roundId, int firstPlayerScore, int secondPlayerScore, int firstPlayerId, int secondPlayerId, Date gameDate, String place) {

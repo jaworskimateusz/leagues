@@ -10,8 +10,6 @@ import pl.jaworskimateuszm.myleagues.mapper.PlaceMapper;
 import pl.jaworskimateuszm.myleagues.model.Place;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/places")
@@ -44,7 +42,7 @@ public class PlaceController {
 	}
 	
 	@PostMapping("/save")
-	public String save(@Valid @ModelAttribute("place") Place place, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+	public String save(@Valid @ModelAttribute("place") Place place, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("error", true);
 			return "redirect:/places/add";
@@ -69,7 +67,7 @@ public class PlaceController {
 	}
 
 	@GetMapping("/search")
-	public String search(@RequestParam("name") String name, Model model, RedirectAttributes redirectAttributes) {
+	public String search(@RequestParam("name") String name, Model model) {
 		List<Place> places = placeMapper.findAllByName(name);
 		model.addAttribute("places", places);
 		return "/places/list-places";

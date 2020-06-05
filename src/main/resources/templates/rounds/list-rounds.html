@@ -116,13 +116,13 @@
 						</td>
 						<td th:if="${confirm == 1}" class="form-inline">
 							<div sec:authorize="hasRole('ROLE_WORKER')">
-								<a th:href="@{/rounds/confirm-payment(roundId=${round.roundId}, playerId=${playerId})}"
+								<a th:if="${round.confirmed == 0}" th:href="@{/rounds/confirm-payment(roundId=${round.roundId}, playerId=${playerId})}"
 								   class="btn btn-outline-secondary btn-sm ml-1"
 								   onclick="if (!(confirm('Czy na pewno chcesz potwierdzić wpisowe?'))) return false">
 									Potwierdź wpisowe
 								</a>
 							</div>
-							<div sec:authorize="hasRole('ROLE_WORKER')">
+							<div th:if="${round.confirmed == 1}" sec:authorize="hasRole('ROLE_WORKER')">
 								<a th:href="@{/rounds/cancel-payment(roundId=${round.roundId}, playerId=${playerId})}"
 								   class="btn btn-dark btn-sm ml-1"
 								   onclick="if (!(confirm('Czy na pewno chcesz anulować wpisowe?'))) return false">

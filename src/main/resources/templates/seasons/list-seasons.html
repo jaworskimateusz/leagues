@@ -117,14 +117,14 @@
 							</div>
 						</td>
 						<td th:if="${confirm == 1}" class="form-inline">
-							<div sec:authorize="hasRole('ROLE_ACCOUNTANT')">
+							<div th:if="${season.confirmed == 0}" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
 								<a th:href="@{/seasons/confirm-payment(seasonId=${season.seasonId}, playerId=${playerId})}"
 								   class="btn btn-outline-secondary btn-sm ml-1"
 								   onclick="if (!(confirm('Czy na pewno chcesz potwierdzić wpisowe?'))) return false">
 									Potwierdź wpisowe
 								</a>
 							</div>
-							<div sec:authorize="hasRole('ROLE_ACCOUNTANT')">
+							<div th:if="${season.confirmed == 1}" sec:authorize="hasRole('ROLE_ACCOUNTANT')">
 								<a th:href="@{/seasons/cancel-payment(seasonId=${season.seasonId}, playerId=${playerId})}"
 								   class="btn btn-dark btn-sm ml-1"
 								   onclick="if (!(confirm('Czy na pewno chcesz anulować wpisowe?'))) return false">

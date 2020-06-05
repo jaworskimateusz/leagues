@@ -65,7 +65,7 @@ public class GameController {
 		model.addAttribute("secondPlayer", secondPlayer);
 		model.addAttribute("rounds", rounds);
 		model.addAttribute("gameSets", gameSets);
-		model.addAttribute("readWrite", true);
+		model.addAttribute("readWrite", true); //TODO find modelMap?
 		return "/games/game-form";
 	}
 	
@@ -200,6 +200,5 @@ public class GameController {
 		model.addAttribute("readWrite", false);
 		return "/games/game-form";
 	}
-
 
 }

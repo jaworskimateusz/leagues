@@ -1,5 +1,6 @@
 package pl.jaworskimateuszm.myleagues.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,6 @@ import pl.jaworskimateuszm.myleagues.model.Season;
 import pl.jaworskimateuszm.myleagues.utils.Parser;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/seasons")
@@ -63,16 +63,18 @@ public class SeasonController {
 		} else {
 			seasonMapper.insert(season);
 		}
+		seasonMapper.insertFee(new Date()); //type 1 means for seasons
+		int feeId = seasonMapper.findLastFeeId();
+		seasonMapper.insertSeasonFee(season.getSeasonId(), feeId);
 		return "redirect:/seasons/list";
 	}
 	
 	@GetMapping("/delete")
 	public String delete(@RequestParam("seasonId") int id) {
-//		seasonMapper.deleteSeasonFeeById(id);
+		seasonMapper.deleteSeasonFeeById(id);
 		seasonMapper.deleteById(id);
 		return "redirect:/seasons/list";
 	}
-
 
 	@GetMapping("/search")
 	public String search(@RequestParam("number") String num,
@@ -94,38 +96,41 @@ public class SeasonController {
 
 	@GetMapping("/manage-seasons")
 	public String manageSeasonPayment(@RequestParam("playerId") int id, Model model) {
-//		Player player = playerMapper.findById(id);
-//		List<Season> seasons = seasonMapper.findAll();
-
-		ArrayList<Season> seasons = new ArrayList<>();
-		seasons.add(new Season(1,2,25, "Zimowy 2019"));
+		List<Season> seasons = seasonMapper.findAllByPlayerId(id);
 		model.addAttribute("seasons", seasons);
-		model.addAttribute("confirm", 1);
 		model.addAttribute("playerId", id);
+		model.addAttribute("confirm", 1);
 		return "/seasons/list-seasons";
 	}
 
 	@GetMapping("/confirm-payment")
 	public String confirmPayment(@RequestParam("seasonId") int seasonId,
 								 @RequestParam("playerId") int playerId,
-								 Model model) {
+								 RedirectAttributes redirectAttributes) {
 		List<Season> seasons = seasonMapper.findAllByPlayerId(playerId);
+		for (Season season : seasons) {
+			if (season.getSeasonId() == seasonId) {
+				seasonMapper.confirmSeasonFee(season.getFeeId());
+				break;
+			}
+		}
 
-		model.addAttribute("seasons", seasons);
-		model.addAttribute("playerId", playerId);
-		model.addAttribute("confirm", 1);
-		return "/seasons/list-seasons";
+		redirectAttributes.addAttribute("playerId", playerId);
+		return "redirect:/seasons/manage-seasons";
 	}
 
 	@GetMapping("/cancel-payment")
 	public String cancelPayment(@RequestParam("seasonId") int seasonId,
 								@RequestParam("playerId") int playerId,
-								Model model) {
-//		List<Season> seasons = seasonMapper.findAll();
-		ArrayList<Season> seasons = new ArrayList<>();
-		model.addAttribute("seasons", seasons);
-		model.addAttribute("playerId", playerId);
-		model.addAttribute("confirm", 1);
-		return "/seasons/list-seasons";
+								RedirectAttributes redirectAttributes) {
+		List<Season> seasons = seasonMapper.findAllByPlayerId(playerId);
+		for (Season season : seasons) {
+			if (season.getSeasonId() == seasonId) {
+				seasonMapper.cancelSeasonFee(season.getFeeId());
+				break;
+			}
+		}
+		redirectAttributes.addAttribute("playerId", playerId);
+		return "redirect:/seasons/manage-seasons";
 	}
 }
