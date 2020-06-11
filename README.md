@@ -34,7 +34,15 @@ Tylko właściciel ma możliwość edycji oraz dodawania rozgrywek.
 ##### Dependency Management, IDE
 * Maven, IntellijJ IDEA
 ## Preview 
-![](https://media.giphy.com/media/H35XA6JSCVvpsbtPDe/giphy.gif)
+![](https://media.giphy.com/media/H35XA6JSCVvpsbtPDe/giphy.gif) <br>
+![](https://media.giphy.com/media/jTHttZNaHagv8C3uFD/giphy.gif) <br>
+![](https://media.giphy.com/media/l091BwdbnEEL6w9e41/giphy.gif) <br>
+![](https://media.giphy.com/media/j72CWyxC6kWIg6ETNA/giphy.gif) <br>
+![](https://media.giphy.com/media/hR5aiK3dQmoiYwDHaQ/giphy.gif) <br>
+![](https://media.giphy.com/media/iIMAtlaQmZDJD4HAOl/giphy.gif) <br>
+![](https://media.giphy.com/media/dAKIqR6wnYlSXe2Bs6/giphy.gif) <br>
+![](https://media.giphy.com/media/chQc0f9cQKNbv6KkW3/giphy.gif) <br>
+
 ## Diagram EER, wybrane scenariusze
 ![eer](/docs/img/eer.png?raw=true "eer") 
 ![scenariusz](/docs/img/scenar-1.png?raw=true "scenariusz") 
